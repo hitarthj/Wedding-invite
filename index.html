@@ -321,6 +321,7 @@
         }
 
         .god-ring:hover img { filter: sepia(0%) brightness(1); }
+        .god-ring:hover .god-img { filter: sepia(0%) brightness(1) !important; }
 
         .god-name {
             margin-top: 16px;
@@ -613,7 +614,7 @@
     <div class="hero-content">
         <p class="hero-eyebrow">You are cordially invited to celebrate the union of</p>
         <h1>CHITRA <span class="amp">&</span> HITARTH</h1>
-        <p class="hero-date">3rd May · 2026 · Bengaluru</p>
+        <p class="hero-date">3rd May · 2026 · Jamnagar</p>
         <div class="countdown-wrap">
             <div class="countdown">
                 <div class="count-item"><span class="num" id="days">00</span><span class="label">Days</span></div>
@@ -642,17 +643,13 @@
     <div class="god-grid reveal">
         <div class="god-card">
             <div class="god-ring">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Lord_Ganesha_gold.jpg/300px-Lord_Ganesha_gold.jpg" 
-                     onerror="this.src='https://placehold.co/300x300/1a1a1a/c9a84c?text=Ganesha'" 
-                     alt="Shri Ganesha">
+                <div class="god-img" style="background-image: url('https://images.unsplash.com/photo-1583121274602-3e2820c69888?auto=format&fit=crop&q=80&w=300'); width:100%; height:100%; border-radius:50%; background-size:cover; background-position:center; filter: sepia(15%) brightness(0.9); transition:0.6s;"></div>
             </div>
             <p class="god-name">Shri Ganesha</p>
         </div>
         <div class="god-card">
             <div class="god-ring">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Shiva_Parvati_Nandi_Halebid.jpg/300px-Shiva_Parvati_Nandi_Halebid.jpg"
-                     onerror="this.src='https://placehold.co/300x300/1a1a1a/c9a84c?text=Shiva'" 
-                     alt="Lord Shiva">
+                <div class="god-img" style="background-image: url('https://images.unsplash.com/photo-1567591370984-8ca1e7d7e8e0?auto=format&fit=crop&q=80&w=300'); width:100%; height:100%; border-radius:50%; background-size:cover; background-position:center; filter: sepia(15%) brightness(0.9); transition:0.6s;"></div>
             </div>
             <p class="god-name">Lord Shiva</p>
         </div>
@@ -663,7 +660,7 @@
         <div class="divider"><span class="divider-icon">✦</span></div>
         <p><b>Manojbhai Joshi & Hina Joshi</b></p>
         <p>along with</p>
-        <p><b>G Shivraj & S Vijayalakshmi Shivraj</b></p>
+        <p><b>G Shivraj & S Vijayalakshmi</b></p>
         <p>cordially invite you to celebrate the union of</p>
         <p class="couple-name">Hitarth & S Chitra</p>
         <p style="font-size:1rem; letter-spacing: 2px; color: var(--text-dim);">(Parvati)</p>
@@ -676,8 +673,9 @@
     <!-- MEHNDI -->
     <div class="event">
         <div class="event-img-wrap reveal-left">
-            <img src="https://images.unsplash.com/photo-1603251578711-3290ca1a0187?auto=format&fit=crop&q=80&w=1400"
-                 onerror="this.src='https://images.unsplash.com/photo-1612872087720-bb876e2e67d1?auto=format&fit=crop&q=80&w=1400'"
+            <!-- Henna/mehndi hands close-up -->
+            <img src="https://images.unsplash.com/photo-1598554747436-c9293d6a588f?auto=format&fit=crop&q=80&w=1400"
+                 onerror="this.src='https://images.unsplash.com/photo-1590074254425-973022519782?auto=format&fit=crop&q=80&w=1400'"
                  alt="Mehndi Ceremony">
         </div>
         <div class="event-body reveal-right">
@@ -697,8 +695,9 @@
     <!-- ENGAGEMENT -->
     <div class="event reverse">
         <div class="event-img-wrap reveal-right">
-            <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&q=80&w=1400"
-                 onerror="this.src='https://images.unsplash.com/photo-1610173826608-b2adc94b3073?auto=format&fit=crop&q=80&w=1400'"
+            <!-- South Indian couple in silk saree & veshti, no faces shown -->
+            <img src="https://images.unsplash.com/photo-1610173826608-b2adc94b3073?auto=format&fit=crop&q=80&w=1400"
+                 onerror="this.src='https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&q=80&w=1400'"
                  alt="Engagement Ceremony">
         </div>
         <div class="event-body reveal-left">
@@ -707,8 +706,8 @@
             <h2 class="event-name">Engagement</h2>
             <p class="event-desc">A sacred commitment made in the presence of loved ones, rooted in the beauty of our shared heritage.</p>
             <div class="attire">
-                <p class="attire-title">Dress Code — Tamil Iyer Tradition</p>
-                <p>Ladies — South Indian Silk Saree<br>Gents — South Indian Veshti & Mundu</p>
+                <p class="attire-title">Dress Code</p>
+                <p>Ladies — South Indian Silk Saree<br>Gents — South Indian Veshti &amp; Mundu</p>
             </div>
         </div>
     </div>
@@ -718,8 +717,9 @@
     <!-- HALDI -->
     <div class="event">
         <div class="event-img-wrap reveal-left">
-            <img src="https://images.unsplash.com/photo-1607190074257-dd4b7af0309f?auto=format&fit=crop&q=80&w=1400"
-                 onerror="this.src='https://images.unsplash.com/photo-1617917814044-daa625c8b456?auto=format&fit=crop&q=80&w=1400'"
+            <!-- Warm turmeric yellow haldi aesthetic -->
+            <img src="https://images.unsplash.com/photo-1601312776046-cf6e8bafdb1c?auto=format&fit=crop&q=80&w=1400"
+                 onerror="this.src='https://images.unsplash.com/photo-1595981234058-a9302fb97229?auto=format&fit=crop&q=80&w=1400'"
                  alt="Haldi Ceremony">
         </div>
         <div class="event-body reveal-right">
@@ -760,9 +760,10 @@
     <!-- WEDDING -->
     <div class="event">
         <div class="event-img-wrap reveal-left">
-            <img src="https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&q=80&w=1400"
-                 onerror="this.src='https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&q=80&w=1400'"
-                 alt="The Wedding">
+            <!-- Floral mandap / wedding gazebo -->
+            <img src="https://images.unsplash.com/photo-1591604466107-ec97de577aff?auto=format&fit=crop&q=80&w=1400"
+                 onerror="this.src='https://images.unsplash.com/photo-1469371670807-013ccf25f16a?auto=format&fit=crop&q=80&w=1400'"
+                 alt="The Wedding Mandap">
         </div>
         <div class="event-body reveal-right">
             <span class="event-number">05</span>
@@ -785,9 +786,8 @@
         <h3>With Warmest Regards</h3>
         <div class="divider"><span class="divider-icon">✦</span></div>
         <div class="footer-names">
-            Ajay Joshi (Brother)<br>
-            Revathi Shivraj &amp; Midhun Mohan<br>
-            The Joshi &amp; Shivraj Families
+            With best compliments from<br>
+            Ajay Joshi &amp; Well Wishers
         </div>
         <p class="footer-note">* Please carry 2 extra pairs of clothes for miscellaneous events &amp; safety.</p>
 
@@ -796,7 +796,7 @@
             <span>Confirm your RSVP</span>
         </a>
 
-        <p class="footer-byline">Chitra &amp; Hitarth &nbsp;·&nbsp; 3rd May 2026 &nbsp;·&nbsp; Bengaluru</p>
+        <p class="footer-byline">Chitra &amp; Hitarth &nbsp;·&nbsp; 3rd May 2026 &nbsp;·&nbsp; Jamnagar</p>
     </div>
 </section>
 
