@@ -1,415 +1,839 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chitra & Hitarth | The Wedding</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@100;200;300;400&display=swap" rel="stylesheet">
 
-<title>Chitra & Hitarth | The Wedding</title>
+    <style>
+        :root {
+            --gold: #c9a84c;
+            --gold-light: #e8c97a;
+            --gold-dim: rgba(201, 168, 76, 0.3);
+            --bg: #080808;
+            --bg2: #0e0e0e;
+            --text: #f0ece4;
+            --text-dim: #8a8070;
+            --glass: rgba(255,255,255,0.025);
+        }
 
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Cormorant+Garamond:wght@300;600&family=Montserrat:wght@100;300;400&display=swap" rel="stylesheet">
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-<style>
+        html { scroll-behavior: smooth; }
 
-:root{
---gold:#c5a059;
---bg:#0f0f0f;
---text:#f4f4f4;
---glass:rgba(255,255,255,0.03);
-}
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Jost', sans-serif;
+            overflow-x: hidden;
+            line-height: 1.8;
+        }
 
-*{margin:0;padding:0;box-sizing:border-box;}
+        /* ─── NOISE TEXTURE OVERLAY ─── */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.4;
+        }
 
-body{
-background:var(--bg);
-color:var(--text);
-font-family:Montserrat,sans-serif;
-overflow-x:hidden;
-line-height:1.6;
-}
+        /* ─── SCROLL REVEAL ─── */
+        .reveal { opacity: 0; transform: translateY(40px); transition: opacity 1.1s cubic-bezier(.16,1,.3,1), transform 1.1s cubic-bezier(.16,1,.3,1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        .reveal-left { opacity: 0; transform: translateX(-40px); transition: opacity 1.1s cubic-bezier(.16,1,.3,1), transform 1.1s cubic-bezier(.16,1,.3,1); }
+        .reveal-left.active { opacity: 1; transform: translateX(0); }
+        .reveal-right { opacity: 0; transform: translateX(40px); transition: opacity 1.1s cubic-bezier(.16,1,.3,1), transform 1.1s cubic-bezier(.16,1,.3,1); }
+        .reveal-right.active { opacity: 1; transform: translateX(0); }
 
-/* REVEAL */
+        /* ─── GOLD DIVIDER ─── */
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            justify-content: center;
+            margin: 30px auto;
+            max-width: 320px;
+        }
+        .divider::before, .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+        }
+        .divider-icon { color: var(--gold); font-size: 1.1rem; }
 
-.reveal{
-opacity:0;
-transform:translateY(40px);
-transition:1s;
-}
+        /* ─── HERO ─── */
+        .hero {
+            position: relative;
+            height: 100vh;
+            min-height: 700px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            overflow: hidden;
+        }
 
-.reveal.active{
-opacity:1;
-transform:translateY(0);
-}
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            background-image: url('https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=2000');
+            background-size: cover;
+            background-position: center 30%;
+            transform: scale(1.08);
+            animation: heroZoom 20s ease-out forwards;
+        }
 
-/* HERO */
+        @keyframes heroZoom {
+            from { transform: scale(1.08); }
+            to { transform: scale(1.0); }
+        }
 
-.hero{
-height:100vh;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-text-align:center;
+        .hero-bg::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                to bottom,
+                rgba(8,8,8,0.3) 0%,
+                rgba(8,8,8,0.55) 40%,
+                rgba(8,8,8,0.85) 100%
+            );
+        }
 
-background:
-linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.6)),
-url("https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=2000&q=80");
+        .hero-content { position: relative; z-index: 2; padding: 20px; }
 
-background-size:cover;
-background-position:center;
-background-attachment:fixed;
-}
+        .hero-eyebrow {
+            font-family: 'Jost', sans-serif;
+            font-weight: 200;
+            font-size: 0.7rem;
+            letter-spacing: 10px;
+            text-transform: uppercase;
+            color: var(--gold-light);
+            margin-bottom: 20px;
+            animation: fadeUp 1.2s 0.2s ease both;
+        }
 
-.hero h1{
-font-family:Cinzel,serif;
-font-size:clamp(2.5rem,8vw,6rem);
-letter-spacing:15px;
-font-weight:400;
-margin:20px 0;
-}
+        .hero h1 {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: clamp(2rem, 7vw, 5.5rem);
+            font-weight: 400;
+            letter-spacing: 8px;
+            line-height: 1.2;
+            margin-bottom: 10px;
+            animation: fadeUp 1.2s 0.5s ease both;
+        }
 
-.hero p{
-font-size:1rem;
-letter-spacing:8px;
-text-transform:uppercase;
-font-weight:100;
-}
+        .hero h1 .amp {
+            color: var(--gold);
+            font-style: italic;
+            margin: 0 12px;
+        }
 
-/* COUNTDOWN */
+        .hero-date {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.3rem;
+            font-weight: 300;
+            letter-spacing: 6px;
+            color: var(--gold-light);
+            margin-top: 10px;
+            animation: fadeUp 1.2s 0.8s ease both;
+        }
 
-.countdown{
-display:flex;
-gap:20px;
-margin-top:40px;
-flex-wrap:wrap;
-justify-content:center;
-}
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(25px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-.count-item{
-border:1px solid var(--gold);
-padding:15px 20px;
-min-width:80px;
-background:var(--glass);
-backdrop-filter:blur(5px);
-}
+        /* ─── COUNTDOWN ─── */
+        .countdown-wrap {
+            margin-top: 55px;
+            animation: fadeUp 1.2s 1.1s ease both;
+        }
 
-.count-item span{
-display:block;
-font-size:1.5rem;
-color:var(--gold);
-font-family:Cinzel;
-}
+        .countdown {
+            display: flex;
+            gap: 0;
+            justify-content: center;
+        }
 
-/* DIVINE */
+        .count-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 18px 24px;
+            min-width: 80px;
+            position: relative;
+            background: rgba(8,8,8,0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--gold-dim);
+        }
 
-.divine-section{
-padding:100px 20px;
-text-align:center;
-background:radial-gradient(circle,#1a1a1a,#0f0f0f);
-}
+        .count-item + .count-item { border-left: none; }
 
-.god-container{
-display:flex;
-justify-content:center;
-gap:60px;
-flex-wrap:wrap;
-margin-bottom:50px;
-}
+        .count-item span.num {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: clamp(1.6rem, 4vw, 2.2rem);
+            color: var(--gold-light);
+            line-height: 1;
+            display: block;
+            min-width: 2ch;
+            text-align: center;
+        }
 
-.god-card{
-width:180px;
-text-align:center;
-}
+        .count-item .label {
+            font-size: 0.55rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            margin-top: 8px;
+        }
 
-.god-card img{
-width:100%;
-border-radius:50%;
-border:1px solid var(--gold);
-padding:8px;
-}
+        .count-sep {
+            display: flex;
+            align-items: center;
+            padding: 0 6px;
+            color: var(--gold-dim);
+            font-size: 1.4rem;
+            background: rgba(8,8,8,0.6);
+            backdrop-filter: blur(12px);
+            border-top: 1px solid var(--gold-dim);
+            border-bottom: 1px solid var(--gold-dim);
+        }
 
-.family-text{
-font-family:"Cormorant Garamond",serif;
-font-size:1.4rem;
-max-width:800px;
-margin:auto;
-}
+        /* ─── SCROLL CUE ─── */
+        .scroll-cue {
+            position: absolute;
+            bottom: 36px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            opacity: 0.6;
+        }
 
-.family-text b{
-color:var(--gold);
-}
+        .scroll-cue span {
+            font-size: 0.6rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+        }
 
-/* TIMELINE */
+        .scroll-line {
+            width: 1px;
+            height: 50px;
+            background: linear-gradient(to bottom, var(--gold), transparent);
+            animation: scrollLine 2s infinite ease;
+        }
 
-.timeline-section{
-padding:100px 0;
-}
+        @keyframes scrollLine {
+            0% { transform: scaleY(0); transform-origin: top; }
+            50% { transform: scaleY(1); transform-origin: top; }
+            51% { transform: scaleY(1); transform-origin: bottom; }
+            100% { transform: scaleY(0); transform-origin: bottom; }
+        }
 
-.event-row{
-display:flex;
-min-height:80vh;
-align-items:center;
-margin-bottom:50px;
-}
+        /* ─── SECTION HEADERS ─── */
+        .section-tag {
+            font-size: 0.6rem;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 12px;
+            display: block;
+        }
 
-.event-image{
-flex:1;
-min-height:500px;
-background-size:cover;
-background-position:center;
-background-repeat:no-repeat;
-background-color:#111;
-}
+        .section-title {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: clamp(1.5rem, 4vw, 2.8rem);
+            font-weight: 400;
+            letter-spacing: 4px;
+        }
 
-.event-details{
-flex:1;
-padding:60px;
-}
+        /* ─── BLESSINGS ─── */
+        .blessings {
+            padding: 120px 24px;
+            text-align: center;
+            background: var(--bg2);
+            position: relative;
+            overflow: hidden;
+        }
 
-.event-details h2{
-font-family:Cinzel,serif;
-color:var(--gold);
-font-size:3rem;
-margin-bottom:15px;
-}
+        .blessings::before {
+            content: '✦';
+            position: absolute;
+            top: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 200px;
+            color: var(--gold-dim);
+            pointer-events: none;
+            line-height: 1;
+        }
 
-.date-label{
-display:block;
-letter-spacing:4px;
-font-size:.9rem;
-color:#888;
-margin-bottom:20px;
-}
+        .god-grid {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            margin: 60px 0;
+            flex-wrap: wrap;
+        }
 
-.attire-box{
-margin-top:30px;
-border-left:2px solid var(--gold);
-padding-left:20px;
-font-style:italic;
-color:#bbb;
-}
+        .god-card { text-align: center; }
 
-/* EVENT IMAGES */
+        .god-ring {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            border: 1px solid var(--gold-dim);
+            padding: 10px;
+            position: relative;
+            display: inline-block;
+            transition: 0.6s ease;
+        }
 
-.img-mehndi{
-background:none;
-}
+        .god-ring::before {
+            content: '';
+            position: absolute;
+            inset: -6px;
+            border-radius: 50%;
+            border: 1px solid var(--gold-dim);
+            transition: 0.6s;
+        }
 
-.img-engagement{
-background-image:url("https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=1200&q=80");
-}
+        .god-ring:hover { border-color: var(--gold); }
+        .god-ring:hover::before { inset: -12px; opacity: 0.4; }
 
-.img-haldi{
-background-image:url("https://images.unsplash.com/photo-1605522561233-768ad7a8fabf?auto=format&fit=crop&w=1200&q=80");
-}
+        .god-ring img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            filter: sepia(15%) brightness(0.9);
+            transition: 0.6s;
+        }
 
-.img-sangeet{
-background-image:url("https://images.unsplash.com/photo-1511795409834-432f7b1e8b53?auto=format&fit=crop&w=1200&q=80");
-}
+        .god-ring:hover img { filter: sepia(0%) brightness(1); }
 
-/* YOUR ORIGINAL GOOD IMAGE */
+        .god-name {
+            margin-top: 16px;
+            font-size: 0.65rem;
+            letter-spacing: 4px;
+            color: var(--gold);
+            text-transform: uppercase;
+        }
 
-.img-wedding{
-background-image:url("https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1200&q=80");
-}
+        .family-invite {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(1.15rem, 2.5vw, 1.55rem);
+            font-weight: 300;
+            max-width: 720px;
+            margin: 0 auto;
+            line-height: 2;
+            color: #d4cfc5;
+        }
 
-/* FOOTER */
+        .family-invite b {
+            color: var(--gold-light);
+            font-weight: 600;
+            font-style: italic;
+        }
 
-.footer{
-padding:100px 20px;
-text-align:center;
-border-top:1px solid #222;
-}
+        .couple-name {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: clamp(1.5rem, 4vw, 2.4rem);
+            color: var(--gold);
+            margin: 28px 0 10px;
+            letter-spacing: 4px;
+        }
 
-.whatsapp-btn{
-display:inline-block;
-border:1px solid var(--gold);
-color:var(--gold);
-padding:20px 40px;
-text-decoration:none;
-letter-spacing:4px;
-font-size:.8rem;
-text-transform:uppercase;
-transition:.4s;
-margin-top:40px;
-}
+        /* ─── EVENT TIMELINE ─── */
+        .timeline { padding: 60px 0; }
 
-.whatsapp-btn:hover{
-background:var(--gold);
-color:#000;
-}
+        .event {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            min-height: 90vh;
+            align-items: stretch;
+            overflow: hidden;
+        }
 
-@media(max-width:900px){
+        .event.reverse { direction: rtl; }
+        .event.reverse > * { direction: ltr; }
 
-.event-row{flex-direction:column;}
+        .event-img-wrap {
+            position: relative;
+            overflow: hidden;
+        }
 
-.event-image{
-height:300px;
-min-height:300px;
-width:100%;
-}
+        .event-img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 8s ease;
+            display: block;
+        }
 
-.event-details{
-padding:40px 20px;
-text-align:center;
-}
+        .event:hover .event-img-wrap img { transform: scale(1.06); }
 
-.hero h1{font-size:3rem;}
+        .event-img-wrap::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to right, rgba(8,8,8,0.2), transparent);
+            pointer-events: none;
+        }
 
-.event-details h2{font-size:2rem;}
+        .event.reverse .event-img-wrap::after {
+            background: linear-gradient(to left, rgba(8,8,8,0.2), transparent);
+        }
 
-}
+        .event-body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 80px 70px;
+            background: var(--bg);
+            position: relative;
+        }
 
-</style>
+        .event-number {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 5rem;
+            color: rgba(201, 168, 76, 0.07);
+            position: absolute;
+            top: 40px;
+            right: 50px;
+            line-height: 1;
+            pointer-events: none;
+        }
+
+        .event.reverse .event-number { right: auto; left: 50px; }
+
+        .event-date {
+            font-size: 0.65rem;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 18px;
+        }
+
+        .event-name {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: clamp(1.8rem, 3.5vw, 3rem);
+            font-weight: 400;
+            letter-spacing: 4px;
+            line-height: 1.2;
+            margin-bottom: 22px;
+        }
+
+        .event-desc {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2rem;
+            font-weight: 300;
+            color: #b8b0a4;
+            line-height: 1.9;
+            max-width: 400px;
+            margin-bottom: 36px;
+        }
+
+        .attire {
+            border-left: 2px solid var(--gold-dim);
+            padding: 18px 22px;
+            background: rgba(201,168,76,0.04);
+        }
+
+        .attire-title {
+            font-size: 0.6rem;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 10px;
+        }
+
+        .attire p {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1rem;
+            font-style: italic;
+            color: #a09890;
+            line-height: 1.9;
+        }
+
+        /* ─── EVENT SEPARATOR ─── */
+        .event-sep {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px 0;
+        }
+
+        .event-sep::before, .event-sep::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(201,168,76,0.15));
+        }
+
+        .event-sep::after {
+            background: linear-gradient(270deg, transparent, rgba(201,168,76,0.15));
+        }
+
+        .event-sep span {
+            color: var(--gold-dim);
+            font-size: 1rem;
+            padding: 0 20px;
+            letter-spacing: 8px;
+            font-family: 'Cormorant Garamond';
+            font-style: italic;
+        }
+
+        /* ─── FOOTER ─── */
+        .footer {
+            padding: 120px 24px;
+            text-align: center;
+            background: var(--bg2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .footer::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold-dim), transparent);
+        }
+
+        .footer-ornament {
+            font-size: 0.8rem;
+            letter-spacing: 10px;
+            color: var(--gold-dim);
+            margin-bottom: 40px;
+        }
+
+        .footer h3 {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: clamp(1.2rem, 3vw, 2rem);
+            font-weight: 400;
+            letter-spacing: 6px;
+            margin-bottom: 12px;
+        }
+
+        .footer-names {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.25rem;
+            font-weight: 300;
+            line-height: 2.2;
+            color: #b0a898;
+        }
+
+        .footer-note {
+            margin-top: 36px;
+            font-size: 0.72rem;
+            letter-spacing: 1.5px;
+            color: var(--text-dim);
+            max-width: 480px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .rsvp-btn {
+            display: inline-block;
+            margin-top: 55px;
+            padding: 18px 52px;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            text-decoration: none;
+            font-size: 0.7rem;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            transition: all 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .rsvp-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--gold);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.5s cubic-bezier(.16,1,.3,1);
+        }
+
+        .rsvp-btn:hover::before { transform: scaleX(1); }
+        .rsvp-btn:hover { color: #080808; }
+        .rsvp-btn span { position: relative; z-index: 1; }
+
+        .footer-byline {
+            margin-top: 60px;
+            font-size: 0.6rem;
+            letter-spacing: 4px;
+            color: rgba(201,168,76,0.25);
+            text-transform: uppercase;
+        }
+
+        /* ─── RESPONSIVE ─── */
+        @media (max-width: 900px) {
+            .event { grid-template-columns: 1fr; min-height: unset; }
+            .event.reverse { direction: ltr; }
+            .event-img-wrap { height: 55vw; min-height: 240px; max-height: 420px; }
+            .event-img-wrap::after { background: linear-gradient(to bottom, rgba(8,8,8,0.1), rgba(8,8,8,0.4)) !important; }
+            .event-body { padding: 50px 28px; text-align: center; }
+            .event-number { display: none; }
+            .attire { text-align: left; }
+            .event-desc { max-width: 100%; }
+            .count-item { padding: 14px 16px; min-width: 60px; }
+            .count-item span.num { font-size: 1.4rem; }
+            .god-ring { width: 130px; height: 130px; }
+        }
+
+        @media (max-width: 480px) {
+            .countdown { gap: 0; }
+            .count-item { padding: 12px 10px; min-width: 50px; }
+            .count-sep { padding: 0 3px; }
+        }
+    </style>
 </head>
-
 <body>
 
+<!-- ═══════════════════════════════════════════ HERO -->
 <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+        <p class="hero-eyebrow">You are cordially invited to celebrate the union of</p>
+        <h1>CHITRA <span class="amp">&</span> HITARTH</h1>
+        <p class="hero-date">3rd May · 2026 · Bengaluru</p>
+        <div class="countdown-wrap">
+            <div class="countdown">
+                <div class="count-item"><span class="num" id="days">00</span><span class="label">Days</span></div>
+                <div class="count-sep">:</div>
+                <div class="count-item"><span class="num" id="hours">00</span><span class="label">Hours</span></div>
+                <div class="count-sep">:</div>
+                <div class="count-item"><span class="num" id="mins">00</span><span class="label">Mins</span></div>
+                <div class="count-sep">:</div>
+                <div class="count-item"><span class="num" id="secs">00</span><span class="label">Secs</span></div>
+            </div>
+        </div>
+    </div>
+    <div class="scroll-cue">
+        <span>Scroll</span>
+        <div class="scroll-line"></div>
+    </div>
+</section>
 
-<p class="reveal active">Welcome to the Wedding of</p>
+<!-- ═══════════════════════════════════════════ BLESSINGS -->
+<section class="blessings">
+    <div class="reveal">
+        <span class="section-tag">✦ Divine Blessings ✦</span>
+        <h2 class="section-title">With Grace & Gratitude</h2>
+    </div>
 
-<h1 class="reveal active">CHITRA & HITARTH</h1>
+    <div class="god-grid reveal">
+        <div class="god-card">
+            <div class="god-ring">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Lord_Ganesha_gold.jpg/300px-Lord_Ganesha_gold.jpg" 
+                     onerror="this.src='https://placehold.co/300x300/1a1a1a/c9a84c?text=Ganesha'" 
+                     alt="Shri Ganesha">
+            </div>
+            <p class="god-name">Shri Ganesha</p>
+        </div>
+        <div class="god-card">
+            <div class="god-ring">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Shiva_Parvati_Nandi_Halebid.jpg/300px-Shiva_Parvati_Nandi_Halebid.jpg"
+                     onerror="this.src='https://placehold.co/300x300/1a1a1a/c9a84c?text=Shiva'" 
+                     alt="Lord Shiva">
+            </div>
+            <p class="god-name">Lord Shiva</p>
+        </div>
+    </div>
 
-<p class="reveal active">3rd May 2026</p>
+    <div class="family-invite reveal">
+        <p>With the divine blessings of our ancestors and the Almighty,</p>
+        <div class="divider"><span class="divider-icon">✦</span></div>
+        <p><b>Manojbhai Joshi & Hina Joshi</b></p>
+        <p>along with</p>
+        <p><b>G Shivraj & S Vijayalakshmi Shivraj</b></p>
+        <p>cordially invite you to celebrate the union of</p>
+        <p class="couple-name">Hitarth & S Chitra</p>
+        <p style="font-size:1rem; letter-spacing: 2px; color: var(--text-dim);">(Parvati)</p>
+    </div>
+</section>
 
-<div class="countdown reveal active">
+<!-- ═══════════════════════════════════════════ EVENTS -->
+<section class="timeline">
 
-<div class="count-item"><span id="days">00</span>Days</div>
-<div class="count-item"><span id="hours">00</span>Hrs</div>
-<div class="count-item"><span id="mins">00</span>Min</div>
-<div class="count-item"><span id="secs">00</span>Sec</div>
+    <!-- MEHNDI -->
+    <div class="event">
+        <div class="event-img-wrap reveal-left">
+            <img src="https://images.unsplash.com/photo-1603251578711-3290ca1a0187?auto=format&fit=crop&q=80&w=1400"
+                 onerror="this.src='https://images.unsplash.com/photo-1612872087720-bb876e2e67d1?auto=format&fit=crop&q=80&w=1400'"
+                 alt="Mehndi Ceremony">
+        </div>
+        <div class="event-body reveal-right">
+            <span class="event-number">01</span>
+            <p class="event-date">1st May 2026 &nbsp;·&nbsp; Evening</p>
+            <h2 class="event-name">Mehndi</h2>
+            <p class="event-desc">We begin with the intoxicating fragrance of henna, soulful music, and the quiet joy of coming together.</p>
+            <div class="attire">
+                <p class="attire-title">Dress Code</p>
+                <p>Ladies — Green or earthy brown accents<br>Gents — Mint shades or smart casuals</p>
+            </div>
+        </div>
+    </div>
 
-</div>
+    <div class="event-sep"><span>✦ ✦ ✦</span></div>
+
+    <!-- ENGAGEMENT -->
+    <div class="event reverse">
+        <div class="event-img-wrap reveal-right">
+            <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&q=80&w=1400"
+                 onerror="this.src='https://images.unsplash.com/photo-1610173826608-b2adc94b3073?auto=format&fit=crop&q=80&w=1400'"
+                 alt="Engagement Ceremony">
+        </div>
+        <div class="event-body reveal-left">
+            <span class="event-number">02</span>
+            <p class="event-date">2nd May 2026 &nbsp;·&nbsp; Morning</p>
+            <h2 class="event-name">Engagement</h2>
+            <p class="event-desc">A sacred commitment made in the presence of loved ones, rooted in the beauty of our shared heritage.</p>
+            <div class="attire">
+                <p class="attire-title">Dress Code — Tamil Iyer Tradition</p>
+                <p>Ladies — South Indian Silk Saree<br>Gents — South Indian Veshti & Mundu</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="event-sep"><span>✦ ✦ ✦</span></div>
+
+    <!-- HALDI -->
+    <div class="event">
+        <div class="event-img-wrap reveal-left">
+            <img src="https://images.unsplash.com/photo-1607190074257-dd4b7af0309f?auto=format&fit=crop&q=80&w=1400"
+                 onerror="this.src='https://images.unsplash.com/photo-1617917814044-daa625c8b456?auto=format&fit=crop&q=80&w=1400'"
+                 alt="Haldi Ceremony">
+        </div>
+        <div class="event-body reveal-right">
+            <span class="event-number">03</span>
+            <p class="event-date">2nd May 2026 &nbsp;·&nbsp; Afternoon</p>
+            <h2 class="event-name">Haldi</h2>
+            <p class="event-desc">Blessing the couple with the golden warmth of turmeric — a ceremony of love, laughter, and ancient tradition.</p>
+            <div class="attire">
+                <p class="attire-title">Dress Code</p>
+                <p>Ladies — Vibrant colors: pink, blue, orange<br>Gents — Traditional Kurta</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="event-sep"><span>✦ ✦ ✦</span></div>
+
+    <!-- SANGEET -->
+    <div class="event reverse">
+        <div class="event-img-wrap reveal-right">
+            <img src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&q=80&w=1400"
+                 onerror="this.src='https://images.unsplash.com/photo-1504680177321-2e6a879aac86?auto=format&fit=crop&q=80&w=1400'"
+                 alt="Sangeet and Dandiya">
+        </div>
+        <div class="event-body reveal-left">
+            <span class="event-number">04</span>
+            <p class="event-date">2nd May 2026 &nbsp;·&nbsp; Night</p>
+            <h2 class="event-name">Sangeet<br>&amp; Dandiya</h2>
+            <p class="event-desc">An evening of rhythm, dance, and sheer celebration — where two cultures come alive in one joyful night.</p>
+            <div class="attire">
+                <p class="attire-title">Dress Code</p>
+                <p>Ladies — Chaniya Choli / Lehenga / Gown<br>Gents — Indo-Western / Nehru Jacket Kurta</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="event-sep"><span>✦ ✦ ✦</span></div>
+
+    <!-- WEDDING -->
+    <div class="event">
+        <div class="event-img-wrap reveal-left">
+            <img src="https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&q=80&w=1400"
+                 onerror="this.src='https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&q=80&w=1400'"
+                 alt="The Wedding">
+        </div>
+        <div class="event-body reveal-right">
+            <span class="event-number">05</span>
+            <p class="event-date">3rd May 2026 &nbsp;·&nbsp; Morning &amp; Afternoon</p>
+            <h2 class="event-name">The Wedding</h2>
+            <p class="event-desc">Witness the Ganesh Sthapna, the Mandva, and the sacred knot — the moment all roads have led to.</p>
+            <div class="attire">
+                <p class="attire-title">Dress Code</p>
+                <p>Strictly Traditional Attire</p>
+            </div>
+        </div>
+    </div>
 
 </section>
 
-<section class="divine-section">
-
-<div class="god-container reveal">
-
-<div class="god-card">
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Ganesh_Chaturthi_Mumbai.jpg/512px-Ganesh_Chaturthi_Mumbai.jpg">
-<p style="margin-top:10px;font-size:.7rem;letter-spacing:3px;color:var(--gold)">SHRI GANESHA</p>
-</div>
-
-<div class="god-card">
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Shiva_statue_at_Murudeshwara.jpg/512px-Shiva_statue_at_Murudeshwara.jpg">
-<p style="margin-top:10px;font-size:.7rem;letter-spacing:3px;color:var(--gold)">LORD SHIVA</p>
-</div>
-
-</div>
-
-<div class="family-text reveal">
-
-<p>With the divine blessings of our ancestors and the Almighty,</p>
-
-<p><b>Manojbhai Joshi & Hina Joshi</b></p>
-
-<p>along with <b>G Shivraj & S Vijayalakshmi Shivraj</b></p>
-
-<p>cordially invite you to celebrate the union of</p>
-
-<h2 style="font-family:Cinzel;margin:20px 0;color:var(--gold)">
-Hitarth & S Chitra (Parvati)
-</h2>
-
-</div>
-
-</section>
-
-<!-- EVENTS -->
-
-<section class="timeline-section">
-
-<div class="event-row">
-<div class="event-image img-mehndi"></div>
-<div class="event-details reveal">
-<span class="date-label">1st May 2026 • Evening</span>
-<h2>Mehndi</h2>
-<p>Starting our celebrations with henna, music and laughter.</p>
-</div>
-</div>
-
-<div class="event-row" style="flex-direction:row-reverse;">
-<div class="event-image img-engagement"></div>
-<div class="event-details reveal">
-<span class="date-label">2nd May 2026 • Morning</span>
-<h2>Engagement</h2>
-<p>A sacred commitment honoring heritage.</p>
-</div>
-</div>
-
-<div class="event-row">
-<div class="event-image img-haldi"></div>
-<div class="event-details reveal">
-<span class="date-label">2nd May 2026 • Afternoon</span>
-<h2>Haldi</h2>
-<p>Blessing the couple with turmeric traditions.</p>
-</div>
-</div>
-
-<div class="event-row" style="flex-direction:row-reverse;">
-<div class="event-image img-sangeet"></div>
-<div class="event-details reveal">
-<span class="date-label">2nd May 2026 • Night</span>
-<h2>Sangeet & Dandiya</h2>
-<p>A night of music and dance.</p>
-</div>
-</div>
-
-<div class="event-row">
-<div class="event-image img-wedding"></div>
-<div class="event-details reveal">
-<span class="date-label">3rd May 2026 • Morning</span>
-<h2>The Wedding</h2>
-<p>The sacred union.</p>
-</div>
-</div>
-
-</section>
-
+<!-- ═══════════════════════════════════════════ FOOTER -->
 <section class="footer">
+    <div class="reveal">
+        <div class="footer-ornament">✦ &nbsp;&nbsp; ✦ &nbsp;&nbsp; ✦</div>
+        <h3>With Warmest Regards</h3>
+        <div class="divider"><span class="divider-icon">✦</span></div>
+        <div class="footer-names">
+            Ajay Joshi (Brother)<br>
+            Revathi Shivraj &amp; Midhun Mohan<br>
+            The Joshi &amp; Shivraj Families
+        </div>
+        <p class="footer-note">* Please carry 2 extra pairs of clothes for miscellaneous events &amp; safety.</p>
 
-<h3 style="font-family:Cinzel;letter-spacing:5px">With Best Compliments</h3>
+        <a href="https://wa.me/917226016163?text=Namaste!%20We%20are%20so%20happy%20to%20attend%20Chitra%20and%20Hitarth's%20wedding!" 
+           class="rsvp-btn" target="_blank">
+            <span>Confirm your RSVP</span>
+        </a>
 
-<p style="margin-top:20px">
-Ajay Joshi (Brother)<br>
-Revathi Shivraj & Midhun Mohan<br>
-The Joshi & Shivraj Families
-</p>
-
-<a class="whatsapp-btn"
-href="https://wa.me/917226016163?text=Namaste!%20Happy%20to%20attend%20your%20wedding!"
-target="_blank">
-Confirm RSVP
-</a>
-
+        <p class="footer-byline">Chitra &amp; Hitarth &nbsp;·&nbsp; 3rd May 2026 &nbsp;·&nbsp; Bengaluru</p>
+    </div>
 </section>
 
 <script>
+    // ─── COUNTDOWN WITH SECONDS ───
+    const weddingDate = new Date("May 3, 2026 10:00:00").getTime();
 
-const weddingDate=new Date("May 3, 2026 10:00:00").getTime();
+    function pad(n) { return String(n).padStart(2, '0'); }
 
-function updateTimer(){
+    function updateTimer() {
+        const now = Date.now();
+        const diff = weddingDate - now;
+        if (diff <= 0) {
+            ['days','hours','mins','secs'].forEach(id => document.getElementById(id).innerText = '00');
+            return;
+        }
+        document.getElementById("days").innerText  = pad(Math.floor(diff / 86400000));
+        document.getElementById("hours").innerText = pad(Math.floor((diff % 86400000) / 3600000));
+        document.getElementById("mins").innerText  = pad(Math.floor((diff % 3600000) / 60000));
+        document.getElementById("secs").innerText  = pad(Math.floor((diff % 60000) / 1000));
+    }
 
-const now=new Date().getTime();
-const diff=weddingDate-now;
+    setInterval(updateTimer, 1000);
+    updateTimer();
 
-const days=Math.floor(diff/(1000*60*60*24));
-const hours=Math.floor((diff%(1000*60*60*24))/(1000*60*60));
-const mins=Math.floor((diff%(1000*60*60))/(1000*60));
-const secs=Math.floor((diff%(1000*60))/1000);
+    // ─── SCROLL REVEAL ───
+    function reveal() {
+        const wh = window.innerHeight;
+        document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => {
+            if (el.getBoundingClientRect().top < wh - 100) {
+                el.classList.add('active');
+            }
+        });
+    }
 
-document.getElementById("days").innerText=days;
-document.getElementById("hours").innerText=hours;
-document.getElementById("mins").innerText=mins;
-document.getElementById("secs").innerText=secs;
-
-}
-
-setInterval(updateTimer,1000);
-updateTimer();
-
+    window.addEventListener('scroll', reveal, { passive: true });
+    reveal();
 </script>
 
 </body>
