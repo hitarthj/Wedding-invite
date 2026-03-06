@@ -17,11 +17,7 @@
 --glass:rgba(255,255,255,0.03);
 }
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-}
+*{margin:0;padding:0;box-sizing:border-box;}
 
 body{
 background:var(--bg);
@@ -56,7 +52,7 @@ text-align:center;
 
 background:
 linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.6)),
-url("https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=2000&q=80");
+url("https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=2000&q=80");
 
 background-size:cover;
 background-position:center;
@@ -200,23 +196,25 @@ color:#bbb;
 /* EVENT IMAGES */
 
 .img-mehndi{
-background-image:url("https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=1200&q=80");
+background:none;
 }
 
 .img-engagement{
-background-image:url("https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=1200&q=80");
+background-image:url("https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=1200&q=80");
 }
 
 .img-haldi{
-background-image:url("https://images.unsplash.com/photo-1583391733981-24f45c27a5c0?auto=format&fit=crop&w=1200&q=80");
+background-image:url("https://images.unsplash.com/photo-1605522561233-768ad7a8fabf?auto=format&fit=crop&w=1200&q=80");
 }
 
 .img-sangeet{
-background-image:url("https://images.unsplash.com/photo-1602631985686-1bb0e6a8696e?auto=format&fit=crop&w=1200&q=80");
+background-image:url("https://images.unsplash.com/photo-1511795409834-432f7b1e8b53?auto=format&fit=crop&w=1200&q=80");
 }
 
+/* KEEPING YOUR ORIGINAL GOOD WEDDING IMAGE */
+
 .img-wedding{
-background-image:url("https://images.unsplash.com/photo-1523438885200-e635ba2c371e?auto=format&fit=crop&w=1200&q=80");
+background-image:url("https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1200&q=80");
 }
 
 /* FOOTER */
@@ -249,9 +247,7 @@ color:#000;
 
 @media(max-width:900px){
 
-.event-row{
-flex-direction:column;
-}
+.event-row{flex-direction:column;}
 
 .event-image{
 height:300px;
@@ -264,13 +260,9 @@ padding:40px 20px;
 text-align:center;
 }
 
-.hero h1{
-font-size:3rem;
-}
+.hero h1{font-size:3rem;}
 
-.event-details h2{
-font-size:2rem;
-}
+.event-details h2{font-size:2rem;}
 
 }
 
@@ -278,9 +270,6 @@ font-size:2rem;
 </head>
 
 <body>
-
-
-<!-- HERO -->
 
 <section class="hero">
 
@@ -292,29 +281,14 @@ font-size:2rem;
 
 <div class="countdown reveal active">
 
-<div class="count-item">
-<span id="days">00</span>Days
-</div>
-
-<div class="count-item">
-<span id="hours">00</span>Hrs
-</div>
-
-<div class="count-item">
-<span id="mins">00</span>Min
-</div>
-
-<div class="count-item">
-<span id="secs">00</span>Sec
-</div>
+<div class="count-item"><span id="days">00</span>Days</div>
+<div class="count-item"><span id="hours">00</span>Hrs</div>
+<div class="count-item"><span id="mins">00</span>Min</div>
+<div class="count-item"><span id="secs">00</span>Sec</div>
 
 </div>
 
 </section>
-
-
-
-<!-- DIVINE -->
 
 <section class="divine-section">
 
@@ -322,7 +296,7 @@ font-size:2rem;
 
 <div class="god-card">
 
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Ganesh_Chaturthi_Mumbai.jpg/512px-Ganesh_Chaturthi_Mumbai.jpg">
+<img src="https://upload.wikimedia.org/wikipedia/commons/4/4f/Ganesha_Statue.jpg">
 
 <p style="margin-top:10px;font-size:.7rem;letter-spacing:3px;color:var(--gold)">
 SHRI GANESHA
@@ -332,7 +306,7 @@ SHRI GANESHA
 
 <div class="god-card">
 
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Shiva_statue_at_Murudeshwara.jpg/512px-Shiva_statue_at_Murudeshwara.jpg">
+<img src="https://upload.wikimedia.org/wikipedia/commons/5/5f/Shiva_statue_Haridwar.jpg">
 
 <p style="margin-top:10px;font-size:.7rem;letter-spacing:3px;color:var(--gold)">
 LORD SHIVA
@@ -360,203 +334,19 @@ Hitarth & S Chitra (Parvati)
 
 </section>
 
-
-
-<!-- EVENTS -->
-
-<section class="timeline-section">
-
-<div class="event-row">
-
-<div class="event-image img-mehndi"></div>
-
-<div class="event-details reveal">
-
-<span class="date-label">1st May 2026 • Evening</span>
-
-<h2>Mehndi</h2>
-
-<p>Starting our celebrations with the fragrance of henna and music.</p>
-
-<div class="attire-box">
-
-<b>Attire</b><br>
-
-Ladies: Green / Brown accents<br>
-
-Gents: Mint shades or Smart Casuals
-
-</div>
-
-</div>
-
-</div>
-
-
-
-<div class="event-row" style="flex-direction:row-reverse">
-
-<div class="event-image img-engagement"></div>
-
-<div class="event-details reveal">
-
-<span class="date-label">2nd May 2026 • Morning</span>
-
-<h2>Engagement</h2>
-
-<p>A sacred commitment honoring heritage and family traditions.</p>
-
-<div class="attire-box">
-
-<b>Attire</b><br>
-
-Ladies: Silk Saree<br>
-
-Gents: Veshti / Mundu
-
-</div>
-
-</div>
-
-</div>
-
-
-
-<div class="event-row">
-
-<div class="event-image img-haldi"></div>
-
-<div class="event-details reveal">
-
-<span class="date-label">2nd May 2026 • Afternoon</span>
-
-<h2>Haldi</h2>
-
-<p>Blessing the couple with turmeric and laughter.</p>
-
-<div class="attire-box">
-
-<b>Attire</b><br>
-
-Ladies: Bright colors<br>
-
-Gents: Kurta
-
-</div>
-
-</div>
-
-</div>
-
-
-
-<div class="event-row" style="flex-direction:row-reverse">
-
-<div class="event-image img-sangeet"></div>
-
-<div class="event-details reveal">
-
-<span class="date-label">2nd May 2026 • Night</span>
-
-<h2>Sangeet & Dandiya</h2>
-
-<p>An evening full of music, dance and celebration.</p>
-
-<div class="attire-box">
-
-<b>Attire</b><br>
-
-Ladies: Chaniya Choli / Lehenga<br>
-
-Gents: Indo-Western
-
-</div>
-
-</div>
-
-</div>
-
-
-
-<div class="event-row">
-
-<div class="event-image img-wedding"></div>
-
-<div class="event-details reveal">
-
-<span class="date-label">3rd May 2026 • Morning</span>
-
-<h2>The Wedding</h2>
-
-<p>The sacred union and rituals with family blessings.</p>
-
-<div class="attire-box">
-
-<b>Attire</b><br>
-
-Strictly Traditional
-
-</div>
-
-</div>
-
-</div>
-
-</section>
-
-
-
-<!-- FOOTER -->
-
-<section class="footer">
-
-<div class="reveal">
-
-<h3 style="font-family:Cinzel;letter-spacing:5px">
-With Best Compliments
-</h3>
-
-<p style="margin-top:20px">
-
-Ajay Joshi (Brother)<br>
-Revathi Shivraj & Midhun Mohan<br>
-The Joshi & Shivraj Families
-
-</p>
-
-<a class="whatsapp-btn"
-href="https://wa.me/917226016163?text=Namaste!%20Happy%20to%20attend%20your%20wedding!"
-target="_blank">
-
-Confirm RSVP
-
-</a>
-
-</div>
-
-</section>
-
-
-
 <script>
 
-/* COUNTDOWN WITH SECONDS */
-
-const weddingDate = new Date("May 3, 2026 10:00:00").getTime();
+const weddingDate=new Date("May 3, 2026 10:00:00").getTime();
 
 function updateTimer(){
 
-const now = new Date().getTime();
+const now=new Date().getTime();
+const diff=weddingDate-now;
 
-const diff = weddingDate - now;
-
-const days = Math.floor(diff/(1000*60*60*24));
-
-const hours = Math.floor((diff%(1000*60*60*24))/(1000*60*60));
-
-const mins = Math.floor((diff%(1000*60*60))/(1000*60));
-
-const secs = Math.floor((diff%(1000*60))/1000);
+const days=Math.floor(diff/(1000*60*60*24));
+const hours=Math.floor((diff%(1000*60*60*24))/(1000*60*60));
+const mins=Math.floor((diff%(1000*60*60))/(1000*60));
+const secs=Math.floor((diff%(1000*60))/1000);
 
 document.getElementById("days").innerText=days;
 document.getElementById("hours").innerText=hours;
@@ -566,36 +356,7 @@ document.getElementById("secs").innerText=secs;
 }
 
 setInterval(updateTimer,1000);
-
 updateTimer();
-
-
-
-/* SCROLL ANIMATION */
-
-const reveal=()=>{
-
-const reveals=document.querySelectorAll(".reveal");
-
-for(let i=0;i<reveals.length;i++){
-
-const windowHeight=window.innerHeight;
-
-const elementTop=reveals[i].getBoundingClientRect().top;
-
-if(elementTop<windowHeight-150){
-
-reveals[i].classList.add("active");
-
-}
-
-}
-
-};
-
-window.addEventListener("scroll",reveal);
-
-reveal();
 
 </script>
 
