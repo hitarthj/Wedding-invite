@@ -1,353 +1,603 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chitra & Hitarth | The Wedding</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300&family=Montserrat:wght@100;300;400&display=swap" rel="stylesheet">
-    
-    <style>
-        :root {
-            --gold: #c5a059;
-            --bg: #0f0f0f;
-            --text: #f4f4f4;
-            --glass: rgba(255, 255, 255, 0.03);
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            background-color: var(--bg); 
-            color: var(--text); 
-            font-family: 'Montserrat', sans-serif; 
-            overflow-x: hidden;
-            line-height: 1.6;
-        }
+<title>Chitra & Hitarth | The Wedding</title>
 
-        /* Smooth Reveal Animation */
-        .reveal { opacity: 0; transform: translateY(30px); transition: all 1s ease-out; }
-        .reveal.active { opacity: 1; transform: translateY(0); }
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Cormorant+Garamond:wght@300;600&family=Montserrat:wght@100;300;400&display=swap" rel="stylesheet">
 
-        /* HERO SECTION */
-        .hero {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
-                        url('https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=2000');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-        }
+<style>
 
-        .hero h1 { 
-            font-family: 'Cinzel', serif; 
-            font-size: clamp(2.5rem, 8vw, 6rem); 
-            letter-spacing: 15px; 
-            font-weight: 400;
-            margin: 20px 0;
-        }
+:root{
+--gold:#c5a059;
+--bg:#0f0f0f;
+--text:#f4f4f4;
+--glass:rgba(255,255,255,0.03);
+}
 
-        .hero p { font-size: 1rem; letter-spacing: 8px; text-transform: uppercase; font-weight: 100; }
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
 
-        /* COUNTDOWN */
-        .countdown {
-            display: flex;
-            gap: 20px;
-            margin-top: 40px;
-        }
-        .count-item {
-            border: 1px solid var(--gold);
-            padding: 15px 20px;
-            min-width: 80px;
-            background: var(--glass);
-            backdrop-filter: blur(5px);
-        }
-        .count-item span { display: block; font-size: 1.5rem; color: var(--gold); font-family: 'Cinzel'; }
+body{
+background:var(--bg);
+color:var(--text);
+font-family:Montserrat,sans-serif;
+overflow-x:hidden;
+line-height:1.6;
+}
 
-        /* DIVINE BLESSINGS */
-        .divine-section {
-            padding: 100px 20px;
-            text-align: center;
-            background: radial-gradient(circle at center, #1a1a1a 0%, #0f0f0f 100%);
-        }
+/* REVEAL */
 
-        .god-container {
-            display: flex;
-            justify-content: center;
-            gap: 60px;
-            margin-bottom: 50px;
-            flex-wrap: wrap;
-        }
+.reveal{
+opacity:0;
+transform:translateY(40px);
+transition:1s;
+}
 
-        .god-card {
-            width: 180px;
-            text-align: center;
-        }
+.reveal.active{
+opacity:1;
+transform:translateY(0);
+}
 
-        .god-card img {
-            width: 100%;
-            border-radius: 50%;
-            border: 1px solid var(--gold);
-            padding: 8px;
-            filter: grayscale(30%) sepia(20%);
-            transition: 0.5s;
-        }
-        .god-card img:hover { filter: grayscale(0%); transform: scale(1.05); }
+/* HERO */
 
-        .family-text {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.4rem;
-            max-width: 800px;
-            margin: 0 auto;
-            font-weight: 300;
-        }
+.hero{
+height:100vh;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+text-align:center;
 
-        .family-text b { color: var(--gold); font-weight: 600; }
+background:
+linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.6)),
+url("https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=2000&q=80");
 
-        /* EVENT TIMELINE */
-        .timeline-section { padding: 100px 0; }
-        
-        .event-row {
-            display: flex;
-            min-height: 80vh;
-            align-items: center;
-            position: relative;
-            margin-bottom: 50px;
-        }
+background-size:cover;
+background-position:center;
+background-attachment:fixed;
+}
 
-        .event-image {
-            flex: 1;
-            height: 100%;
-            min-height: 500px;
-            background-size: cover;
-            background-position: center;
-            position: sticky;
-            top: 0;
-        }
+.hero h1{
+font-family:Cinzel,serif;
+font-size:clamp(2.5rem,8vw,6rem);
+letter-spacing:15px;
+font-weight:400;
+margin:20px 0;
+}
 
-        .event-details {
-            flex: 1;
-            padding: 60px;
-            background: var(--bg);
-            z-index: 2;
-        }
+.hero p{
+font-size:1rem;
+letter-spacing:8px;
+text-transform:uppercase;
+font-weight:100;
+}
 
-        .event-details h2 { 
-            font-family: 'Cinzel', serif; 
-            color: var(--gold); 
-            font-size: 3rem; 
-            margin-bottom: 15px; 
-        }
+/* COUNTDOWN */
 
-        .date-label { 
-            display: block; 
-            letter-spacing: 4px; 
-            text-transform: uppercase; 
-            font-size: 0.9rem; 
-            margin-bottom: 20px;
-            color: #888;
-        }
+.countdown{
+display:flex;
+gap:20px;
+margin-top:40px;
+flex-wrap:wrap;
+justify-content:center;
+}
 
-        .attire-box {
-            margin-top: 30px;
-            border-left: 2px solid var(--gold);
-            padding-left: 20px;
-            font-style: italic;
-            font-size: 0.95rem;
-            color: #bbb;
-        }
+.count-item{
+border:1px solid var(--gold);
+padding:15px 20px;
+min-width:80px;
+background:var(--glass);
+backdrop-filter:blur(5px);
+}
 
-        /* BACKGROUNDS FOR EVENTS */
-        .img-mehndi { background-image: url('https://images.unsplash.com/photo-1590074254425-973022519782?auto=format&fit=crop&q=80&w=1200'); }
-        .img-engagement { background-image: url('https://images.unsplash.com/photo-1544923246-77307dd654ca?auto=format&fit=crop&q=80&w=1200'); } /* Silk & Temple Vibe */
-        .img-haldi { background-image: url('https://images.unsplash.com/photo-1595981234058-a9302fb97229?auto=format&fit=crop&q=80&w=1200'); }
-        .img-sangeet { background-image: url('https://images.unsplash.com/photo-1514525253361-b83f859b25c2?auto=format&fit=crop&q=80&w=1200'); }
-        .img-wedding { background-image: url('https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&q=80&w=1200'); }
+.count-item span{
+display:block;
+font-size:1.5rem;
+color:var(--gold);
+font-family:Cinzel;
+}
 
-        /* RSVP FOOTER */
-        .footer {
-            padding: 100px 20px;
-            text-align: center;
-            border-top: 1px solid #222;
-        }
+/* DIVINE */
 
-        .whatsapp-btn {
-            display: inline-block;
-            background: transparent;
-            border: 1px solid var(--gold);
-            color: var(--gold);
-            padding: 20px 40px;
-            text-decoration: none;
-            letter-spacing: 4px;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            transition: 0.4s;
-            margin-top: 40px;
-        }
-        .whatsapp-btn:hover { background: var(--gold); color: #000; }
+.divine-section{
+padding:100px 20px;
+text-align:center;
+background:radial-gradient(circle,#1a1a1a,#0f0f0f);
+}
 
-        @media (max-width: 900px) {
-            .event-row { flex-direction: column; }
-            .event-image { width: 100%; height: 300px; min-height: 300px; }
-            .event-details { padding: 40px 20px; text-align: center; }
-            .hero h1 { font-size: 3rem; }
-            .event-details h2 { font-size: 2rem; }
-        }
-    </style>
+.god-container{
+display:flex;
+justify-content:center;
+gap:60px;
+flex-wrap:wrap;
+margin-bottom:50px;
+}
+
+.god-card{
+width:180px;
+text-align:center;
+}
+
+.god-card img{
+width:100%;
+border-radius:50%;
+border:1px solid var(--gold);
+padding:8px;
+transition:.4s;
+}
+
+.god-card img:hover{
+transform:scale(1.05);
+}
+
+.family-text{
+font-family:"Cormorant Garamond",serif;
+font-size:1.4rem;
+max-width:800px;
+margin:auto;
+}
+
+.family-text b{
+color:var(--gold);
+}
+
+/* TIMELINE */
+
+.timeline-section{
+padding:100px 0;
+}
+
+.event-row{
+display:flex;
+min-height:80vh;
+align-items:center;
+margin-bottom:50px;
+}
+
+.event-image{
+flex:1;
+min-height:500px;
+background-size:cover;
+background-position:center;
+background-repeat:no-repeat;
+background-color:#111;
+}
+
+.event-details{
+flex:1;
+padding:60px;
+}
+
+.event-details h2{
+font-family:Cinzel,serif;
+color:var(--gold);
+font-size:3rem;
+margin-bottom:15px;
+}
+
+.date-label{
+display:block;
+letter-spacing:4px;
+font-size:.9rem;
+color:#888;
+margin-bottom:20px;
+}
+
+.attire-box{
+margin-top:30px;
+border-left:2px solid var(--gold);
+padding-left:20px;
+font-style:italic;
+color:#bbb;
+}
+
+/* EVENT IMAGES */
+
+.img-mehndi{
+background-image:url("https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=1200&q=80");
+}
+
+.img-engagement{
+background-image:url("https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=1200&q=80");
+}
+
+.img-haldi{
+background-image:url("https://images.unsplash.com/photo-1583391733981-24f45c27a5c0?auto=format&fit=crop&w=1200&q=80");
+}
+
+.img-sangeet{
+background-image:url("https://images.unsplash.com/photo-1602631985686-1bb0e6a8696e?auto=format&fit=crop&w=1200&q=80");
+}
+
+.img-wedding{
+background-image:url("https://images.unsplash.com/photo-1523438885200-e635ba2c371e?auto=format&fit=crop&w=1200&q=80");
+}
+
+/* FOOTER */
+
+.footer{
+padding:100px 20px;
+text-align:center;
+border-top:1px solid #222;
+}
+
+.whatsapp-btn{
+display:inline-block;
+border:1px solid var(--gold);
+color:var(--gold);
+padding:20px 40px;
+text-decoration:none;
+letter-spacing:4px;
+font-size:.8rem;
+text-transform:uppercase;
+transition:.4s;
+margin-top:40px;
+}
+
+.whatsapp-btn:hover{
+background:var(--gold);
+color:#000;
+}
+
+/* MOBILE */
+
+@media(max-width:900px){
+
+.event-row{
+flex-direction:column;
+}
+
+.event-image{
+height:300px;
+min-height:300px;
+width:100%;
+}
+
+.event-details{
+padding:40px 20px;
+text-align:center;
+}
+
+.hero h1{
+font-size:3rem;
+}
+
+.event-details h2{
+font-size:2rem;
+}
+
+}
+
+</style>
 </head>
+
 <body>
 
-    <section class="hero">
-        <p class="reveal active">Welcome to the Wedding of</p>
-        <h1 class="reveal active">CHITRA & HITARTH</h1>
-        <p class="reveal active">3rd May 2026</p>
-        
-        <div class="countdown reveal active">
-            <div class="count-item"><span id="days">00</span>Days</div>
-            <div class="count-item"><span id="hours">00</span>Hrs</div>
-            <div class="count-item"><span id="mins">00</span>Min</div>
-        </div>
-    </section>
 
-    <section class="divine-section">
-        <div class="god-container reveal">
-            <div class="god-card">
-                <img src="https://i.pinimg.com/originals/80/f4/0a/80f40a9c6827083074d28994ecf235d6.jpg" alt="Ganpati">
-                <p style="margin-top:10px; font-size: 0.7rem; letter-spacing: 3px; color: var(--gold);">SHRI GANESHA</p>
-            </div>
-            <div class="god-card">
-                <img src="https://i.pinimg.com/originals/a0/0a/31/a00a31281895a987d656093952f1f582.jpg" alt="Shivji">
-                <p style="margin-top:10px; font-size: 0.7rem; letter-spacing: 3px; color: var(--gold);">LORD SHIVA</p>
-            </div>
-        </div>
-        <div class="family-text reveal">
-            <p>With the divine blessings of our ancestors and the Almighty,</p>
-            <p><b>Manojbhai Joshi & Hina Joshi</b></p>
-            <p>along with <b>G Shivraj & S Vijayalakshmi Shivraj</b></p>
-            <p>cordially invite you to celebrate the union of</p>
-            <h2 style="font-family: 'Cinzel'; margin: 20px 0; color: var(--gold);">Hitarth & S Chitra (Parvati)</h2>
-        </div>
-    </section>
+<!-- HERO -->
 
-    <section class="timeline-section">
-        
-        <div class="event-row">
-            <div class="event-image img-mehndi"></div>
-            <div class="event-details reveal">
-                <span class="date-label">1st May 2026 • Evening</span>
-                <h2>Mehndi</h2>
-                <p>Starting our celebrations with the fragrance of henna and soulful music.</p>
-                <div class="attire-box">
-                    <b>Attire:</b><br>
-                    Ladies: Green or Brown accents<br>
-                    Gents: Mint shades or Simple Smart Casuals
-                </div>
-            </div>
-        </div>
+<section class="hero">
 
-        <div class="event-row" style="flex-direction: row-reverse;">
-            <div class="event-image img-engagement"></div>
-            <div class="event-details reveal">
-                <span class="date-label">2nd May 2026 • Morning</span>
-                <h2>Engagement</h2>
-                <p>A sacred commitment made in the presence of family, honoring our heritage.</p>
-                <div class="attire-box">
-                    <b>Attire (Tamil Iyer Tradition):</b><br>
-                    Ladies: South Indian Silk Saree<br>
-                    Gents: South Indian Veshti & Mundu
-                </div>
-            </div>
-        </div>
+<p class="reveal active">Welcome to the Wedding of</p>
 
-        <div class="event-row">
-            <div class="event-image img-haldi"></div>
-            <div class="event-details reveal">
-                <span class="date-label">2nd May 2026 • Afternoon</span>
-                <h2>Haldi</h2>
-                <p>Blessing the couple with the golden glow of turmeric and traditions.</p>
-                <div class="attire-box">
-                    <b>Attire:</b><br>
-                    Ladies: Vibrant mixed colors (Pink, Blue, Orange)<br>
-                    Gents: Traditional Kurta
-                </div>
-            </div>
-        </div>
+<h1 class="reveal active">CHITRA & HITARTH</h1>
 
-        <div class="event-row" style="flex-direction: row-reverse;">
-            <div class="event-image img-sangeet"></div>
-            <div class="event-details reveal">
-                <span class="date-label">2nd May 2026 • Night</span>
-                <h2>Sangeet & Dandiya</h2>
-                <p>An evening of rhythm, dance, and celebration across cultures.</p>
-                <div class="attire-box">
-                    <b>Attire:</b><br>
-                    Ladies: Chaniya Choli / Lehengas / Gowns<br>
-                    Gents: Indo-Western / Nehru Jacket Kurta
-                </div>
-            </div>
-        </div>
+<p class="reveal active">3rd May 2026</p>
 
-        <div class="event-row">
-            <div class="event-image img-wedding"></div>
-            <div class="event-details reveal">
-                <span class="date-label">3rd May 2026 • Morning & Afternoon</span>
-                <h2>The Wedding</h2>
-                <p>Witness the Ganesh Sthapna, Mandva, and the sacred knot.</p>
-                <div class="attire-box">
-                    <b>Attire:</b><br>
-                    Strictly Traditional
-                </div>
-            </div>
-        </div>
+<div class="countdown reveal active">
 
-    </section>
+<div class="count-item">
+<span id="days">00</span>Days
+</div>
 
-    <section class="footer">
-        <div class="reveal">
-            <h3 style="font-family: 'Cinzel'; letter-spacing: 5px;">With Best Compliments</h3>
-            <p style="margin-top: 20px; font-weight: 300;">
-                Ajay Joshi (Brother)<br>
-                Revathi Shivraj & Midhun Mohan<br>
-                The Joshi & Shivraj Families
-            </p>
-            <p style="margin-top: 30px; font-size: 0.8rem; color: #666;">*Please carry 2 extra pairs of clothes for miscellaneous events safety.</p>
-            
-            <a href="https://wa.me/917226016163?text=Namaste!%20We%20are%20so%20happy%20to%20attend%20Chitra%20and%20Hitarth's%20wedding!" class="whatsapp-btn" target="_blank">
-                Confirm your RSVP
-            </a>
-        </div>
-    </section>
+<div class="count-item">
+<span id="hours">00</span>Hrs
+</div>
 
-    <script>
-        // COUNTDOWN SCRIPT
-        const weddingDate = new Date("May 3, 2026 10:00:00").getTime();
-        function updateTimer() {
-            const now = new Date().getTime();
-            const diff = weddingDate - now;
-            document.getElementById("days").innerText = Math.floor(diff / (1000 * 60 * 60 * 24));
-            document.getElementById("hours").innerText = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            document.getElementById("mins").innerText = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-        }
-        setInterval(updateTimer, 1000);
-        updateTimer();
+<div class="count-item">
+<span id="mins">00</span>Min
+</div>
 
-        // REVEAL ON SCROLL SCRIPT
-        const reveal = () => {
-            var reveals = document.querySelectorAll(".reveal");
-            for (var i = 0; i < reveals.length; i++) {
-                var windowHeight = window.innerHeight;
-                var elementTop = reveals[i].getBoundingClientRect().top;
-                var elementVisible = 150;
-                if (elementTop < windowHeight - elementVisible) {
-                    reveals[i].classList.add("active");
-                }
-            }
-        };
-        window.addEventListener("scroll", reveal);
-        reveal(); // Initial check
-    </script>
+<div class="count-item">
+<span id="secs">00</span>Sec
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- DIVINE -->
+
+<section class="divine-section">
+
+<div class="god-container reveal">
+
+<div class="god-card">
+
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Ganesh_Chaturthi_Mumbai.jpg/512px-Ganesh_Chaturthi_Mumbai.jpg">
+
+<p style="margin-top:10px;font-size:.7rem;letter-spacing:3px;color:var(--gold)">
+SHRI GANESHA
+</p>
+
+</div>
+
+<div class="god-card">
+
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Shiva_statue_at_Murudeshwara.jpg/512px-Shiva_statue_at_Murudeshwara.jpg">
+
+<p style="margin-top:10px;font-size:.7rem;letter-spacing:3px;color:var(--gold)">
+LORD SHIVA
+</p>
+
+</div>
+
+</div>
+
+<div class="family-text reveal">
+
+<p>With the divine blessings of our ancestors and the Almighty,</p>
+
+<p><b>Manojbhai Joshi & Hina Joshi</b></p>
+
+<p>along with <b>G Shivraj & S Vijayalakshmi Shivraj</b></p>
+
+<p>cordially invite you to celebrate the union of</p>
+
+<h2 style="font-family:Cinzel;margin:20px 0;color:var(--gold)">
+Hitarth & S Chitra (Parvati)
+</h2>
+
+</div>
+
+</section>
+
+
+
+<!-- EVENTS -->
+
+<section class="timeline-section">
+
+<div class="event-row">
+
+<div class="event-image img-mehndi"></div>
+
+<div class="event-details reveal">
+
+<span class="date-label">1st May 2026 • Evening</span>
+
+<h2>Mehndi</h2>
+
+<p>Starting our celebrations with the fragrance of henna and music.</p>
+
+<div class="attire-box">
+
+<b>Attire</b><br>
+
+Ladies: Green / Brown accents<br>
+
+Gents: Mint shades or Smart Casuals
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<div class="event-row" style="flex-direction:row-reverse">
+
+<div class="event-image img-engagement"></div>
+
+<div class="event-details reveal">
+
+<span class="date-label">2nd May 2026 • Morning</span>
+
+<h2>Engagement</h2>
+
+<p>A sacred commitment honoring heritage and family traditions.</p>
+
+<div class="attire-box">
+
+<b>Attire</b><br>
+
+Ladies: Silk Saree<br>
+
+Gents: Veshti / Mundu
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<div class="event-row">
+
+<div class="event-image img-haldi"></div>
+
+<div class="event-details reveal">
+
+<span class="date-label">2nd May 2026 • Afternoon</span>
+
+<h2>Haldi</h2>
+
+<p>Blessing the couple with turmeric and laughter.</p>
+
+<div class="attire-box">
+
+<b>Attire</b><br>
+
+Ladies: Bright colors<br>
+
+Gents: Kurta
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<div class="event-row" style="flex-direction:row-reverse">
+
+<div class="event-image img-sangeet"></div>
+
+<div class="event-details reveal">
+
+<span class="date-label">2nd May 2026 • Night</span>
+
+<h2>Sangeet & Dandiya</h2>
+
+<p>An evening full of music, dance and celebration.</p>
+
+<div class="attire-box">
+
+<b>Attire</b><br>
+
+Ladies: Chaniya Choli / Lehenga<br>
+
+Gents: Indo-Western
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<div class="event-row">
+
+<div class="event-image img-wedding"></div>
+
+<div class="event-details reveal">
+
+<span class="date-label">3rd May 2026 • Morning</span>
+
+<h2>The Wedding</h2>
+
+<p>The sacred union and rituals with family blessings.</p>
+
+<div class="attire-box">
+
+<b>Attire</b><br>
+
+Strictly Traditional
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- FOOTER -->
+
+<section class="footer">
+
+<div class="reveal">
+
+<h3 style="font-family:Cinzel;letter-spacing:5px">
+With Best Compliments
+</h3>
+
+<p style="margin-top:20px">
+
+Ajay Joshi (Brother)<br>
+Revathi Shivraj & Midhun Mohan<br>
+The Joshi & Shivraj Families
+
+</p>
+
+<a class="whatsapp-btn"
+href="https://wa.me/917226016163?text=Namaste!%20Happy%20to%20attend%20your%20wedding!"
+target="_blank">
+
+Confirm RSVP
+
+</a>
+
+</div>
+
+</section>
+
+
+
+<script>
+
+/* COUNTDOWN WITH SECONDS */
+
+const weddingDate = new Date("May 3, 2026 10:00:00").getTime();
+
+function updateTimer(){
+
+const now = new Date().getTime();
+
+const diff = weddingDate - now;
+
+const days = Math.floor(diff/(1000*60*60*24));
+
+const hours = Math.floor((diff%(1000*60*60*24))/(1000*60*60));
+
+const mins = Math.floor((diff%(1000*60*60))/(1000*60));
+
+const secs = Math.floor((diff%(1000*60))/1000);
+
+document.getElementById("days").innerText=days;
+document.getElementById("hours").innerText=hours;
+document.getElementById("mins").innerText=mins;
+document.getElementById("secs").innerText=secs;
+
+}
+
+setInterval(updateTimer,1000);
+
+updateTimer();
+
+
+
+/* SCROLL ANIMATION */
+
+const reveal=()=>{
+
+const reveals=document.querySelectorAll(".reveal");
+
+for(let i=0;i<reveals.length;i++){
+
+const windowHeight=window.innerHeight;
+
+const elementTop=reveals[i].getBoundingClientRect().top;
+
+if(elementTop<windowHeight-150){
+
+reveals[i].classList.add("active");
+
+}
+
+}
+
+};
+
+window.addEventListener("scroll",reveal);
+
+reveal();
+
+</script>
+
 </body>
 </html>
