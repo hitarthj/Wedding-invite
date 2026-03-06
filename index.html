@@ -3,65 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hitarth & Chitra's Wedding Invitation</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Great+Vibes&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>Hitarth & S Chitra | Wedding Invitation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@200;400;600&family=Great+Vibes&display=swap" rel="stylesheet">
     
     <style>
-        /* CSS Variables for common styles */
         :root {
             --gold: #d4af37;
-            --text-light: #f4f4f4;
-            --glass-bg: rgba(255, 255, 255, 0.05);
-            --glass-border: rgba(255, 255, 255, 0.1);
+            --white: #ffffff;
+            --dark: #0a0e14;
+            --glass: rgba(0, 0, 0, 0.7);
         }
 
-        /* Animated Gradient Background */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
-            margin: 0;
-            padding: 0;
             font-family: 'Montserrat', sans-serif;
-            color: var(--text-light);
-            background: linear-gradient(-45deg, #0f2027, #203a43, #2c5364, #1a1a2e);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
+            background-color: var(--dark);
+            color: var(--white);
             overflow-x: hidden;
+            scroll-behavior: smooth;
         }
 
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        /* Parallax Container */
+        .parallax-section {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
         }
 
-        /* Typography */
-        h1, h2, h3 { font-family: 'Cinzel', serif; font-weight: 700; text-align: center; }
-        .cursive { font-family: 'Great Vibes', cursive; color: var(--gold); }
-        
-        /* Layout & Glassmorphism */
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 20px;
+        .overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.7));
+            z-index: 1;
         }
 
-        .glass-panel {
-            background: var(--glass-bg);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            padding: 40px;
-            margin-bottom: 40px;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-        }
-
-        /* Hero Section & Gods */
-        .hero {
+        .content {
+            position: relative;
+            z-index: 2;
             text-align: center;
-            padding: 60px 20px;
+            padding: 20px;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 1.5s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
 
-        .gods-container {
+        .content.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Background Images */
+        .hero { background-image: url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=2000'); }
+        .bg-mehndi { background-image: url('https://images.unsplash.com/photo-1590074254425-973022519782?q=80&w=2000'); }
+        .bg-haldi { background-image: url('https://images.unsplash.com/photo-1545231027-63b3f162ad0e?q=80&w=2000'); }
+        .bg-sangeet { background-image: url('https://images.unsplash.com/photo-1514525253361-b83f859b25c2?q=80&w=2000'); }
+        .bg-wedding { background-image: url('https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=2000'); }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 8vw, 5.5rem);
+            font-weight: 400;
+            letter-spacing: 4px;
+            margin-bottom: 10px;
+        }
+
+        .cursive {
+            font-family: 'Great Vibes', cursive;
+            color: var(--gold);
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+        }
+
+        /* Divine Section */
+        .deity-section {
+            background: #0a0e14;
+            padding: 80px 20px;
+            text-align: center;
+        }
+
+        .god-container {
             display: flex;
             justify-content: center;
             gap: 40px;
@@ -69,204 +96,186 @@
         }
 
         .god-img {
-            width: 120px;
-            height: 120px;
+            width: 140px;
+            height: 140px;
             border-radius: 50%;
-            border: 2px solid var(--gold);
-            object-fit: cover;
-            animation: float 4s ease-in-out infinite;
-            box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
-        }
-
-        .god-img:nth-child(2) {
-            animation-delay: 2s; /* Offsets the floating animation */
+            border: 1px solid var(--gold);
+            padding: 5px;
+            animation: float 5s ease-in-out infinite;
         }
 
         @keyframes float {
-            0% { transform: translateY(0px); }
+            0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-15px); }
-            100% { transform: translateY(0px); }
         }
 
-        .couple-names {
-            font-size: 4rem;
-            margin: 20px 0;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        /* Event Box */
+        .event-box {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border: 0.5px solid rgba(212, 175, 55, 0.3);
+            max-width: 550px;
+            width: 90%;
         }
-
-        .families {
-            text-align: center;
-            font-weight: 300;
-            line-height: 1.8;
-            margin-top: 30px;
-        }
-
-        /* Events Grid */
-        .events-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-        }
-
-        .event-card {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 15px;
-            padding: 30px;
-            transition: all 0.4s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        /* Hover Animations for Event Cards based on Themes */
-        .event-card:hover {
-            transform: translateY(-10px);
-        }
-
-        /* Custom glow per event */
-        .event-card.mehndi:hover { box-shadow: 0 10px 30px rgba(168, 230, 207, 0.4); border-color: #a8e6cf; }
-        .event-card.haldi:hover { box-shadow: 0 10px 30px rgba(255, 154, 158, 0.4); border-color: #ff9a9e; }
-        .event-card.engagement:hover { box-shadow: 0 10px 30px rgba(246, 211, 101, 0.4); border-color: #f6d365; }
-        .event-card.sangeet:hover { box-shadow: 0 10px 30px rgba(132, 250, 176, 0.4); border-color: #84fab0; }
-        .event-card.wedding:hover { box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4); border-color: var(--gold); }
-        .event-card.misc:hover { box-shadow: 0 10px 30px rgba(207, 217, 223, 0.4); border-color: #cfd9df; }
 
         .event-title {
-            font-family: 'Cinzel', serif;
+            font-family: 'Playfair Display', serif;
             color: var(--gold);
-            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
-            padding-bottom: 10px;
+            font-size: 2.2rem;
             margin-bottom: 15px;
+            letter-spacing: 2px;
         }
 
         .dress-code {
-            font-size: 0.9rem;
-            color: #ddd;
-            margin-top: 15px;
-            background: rgba(0,0,0,0.2);
-            padding: 10px;
-            border-radius: 8px;
-            border-left: 3px solid var(--gold);
+            margin-top: 20px;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #ccc;
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+            padding-top: 15px;
         }
 
-        /* RSVP WhatsApp Button */
+        /* RSVP */
         .rsvp-btn {
             position: fixed;
             bottom: 30px;
             right: 30px;
-            background: #25D366;
-            color: white;
-            padding: 15px 30px;
-            border-radius: 50px;
+            z-index: 1000;
+            background: var(--gold);
+            color: #000;
+            padding: 18px 35px;
             text-decoration: none;
             font-weight: 600;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+            transition: 0.3s;
+        }
+
+        .rsvp-btn:hover { background: #fff; transform: translateY(-3px); }
+
+        .family-list {
+            line-height: 2.2;
+            font-weight: 200;
             font-size: 1.1rem;
-            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
-            animation: pulse 2s infinite;
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            gap: 10px;
         }
 
-        @keyframes pulse {
-            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
-            70% { transform: scale(1); box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
-            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
-        }
-
-        /* Responsive */
         @media (max-width: 768px) {
-            .couple-names { font-size: 2.5rem; }
-            .gods-container { gap: 20px; }
-            .god-img { width: 90px; height: 90px; }
-            .rsvp-btn { bottom: 20px; right: 20px; padding: 12px 20px; font-size: 1rem; }
+            .parallax-section { background-attachment: scroll; } /* Better for mobile performance */
+            .god-img { width: 100px; height: 100px; }
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <section class="hero glass-panel">
-            <div class="gods-container">
-                <img src="https://images.unsplash.com/photo-1582560468989-13e54b52b2fa?auto=format&fit=crop&q=80&w=200" alt="Lord Ganesha" class="god-img" title="Shri Ganeshaya Namah">
-                <img src="https://images.unsplash.com/photo-1621303837174-89787a7d4729?auto=format&fit=crop&q=80&w=200" alt="Lord Shiva" class="god-img" title="Om Namah Shivaya">
-            </div>
-            
-            <h3>Together with their families</h3>
-            <h1 class="couple-names cursive">Hitarth <span style="font-family:'Montserrat'; font-size:2rem; color:#fff;">&</span> Chitra <br><span style="font-size: 1.5rem;">(Parvati)</span></h1>
-            <h3>Invite you to celebrate their wedding</h3>
-
-            <div class="families">
-                <p><strong>Parents of the Groom:</strong><br> Manojbhai Joshi & Hina Joshi</p>
-                <p><strong>Brother of the Groom:</strong><br> Ajay Joshi</p>
-                <hr style="width: 50px; border-color: var(--gold); margin: 20px auto;">
-                <p><strong>Parents of the Bride:</strong><br> Shivraj G & Vijayalakshmi Shivraj</p>
-                <p><strong>Sister & Brother-in-law of the Bride:</strong><br> Revathi Shivraj & Midhun Mohan</p>
-            </div>
-        </section>
-
-        <h2 style="font-size: 2.5rem; margin-bottom: 40px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">Wedding Itinerary</h2>
-        
-        <div class="events-grid">
-            
-            <div class="event-card mehndi">
-                <h3 class="event-title">Mehndi</h3>
-                <p>An intimate afternoon of henna, music, and joy.</p>
-                <div class="dress-code">
-                    <strong>👗 Ladies:</strong> Green or brown matching attire.<br>
-                    <strong>👔 Gents:</strong> Mint colors or simple, casual pant/shirt.
-                </div>
-            </div>
-
-            <div class="event-card haldi">
-                <h3 class="event-title">Haldi</h3>
-                <p>A vibrant morning of traditional rituals and blessings.</p>
-                <div class="dress-code">
-                    <strong>👗 Ladies:</strong> Mixed bright colors (pink, blue, orange, etc.).<br>
-                    <strong>👔 Gents:</strong> Traditional Kurtas.
-                </div>
-            </div>
-
-            <div class="event-card engagement">
-                <h3 class="event-title">Engagement</h3>
-                <p>The official exchange of rings and promises.</p>
-                <div class="dress-code">
-                    <strong>👔 Attire:</strong> South Indian Veshti/Mundu and Shirt.
-                </div>
-            </div>
-
-            <div class="event-card sangeet">
-                <h3 class="event-title">Sangeet & Dandiya Night</h3>
-                <p>Get ready to dance the night away to joyful beats!</p>
-                <div class="dress-code">
-                    <strong>👗 Ladies:</strong> Chaniya Choli, Lehenga, or Western Gowns.<br>
-                    <strong>👔 Gents:</strong> Traditional, Indo-Western, or Kurta/Nehru Jacket.
-                </div>
-            </div>
-
-            <div class="event-card wedding">
-                <h3 class="event-title">The Wedding</h3>
-                <p>The auspicious moment we tie the knot.</p>
-                <div class="dress-code">
-                    <strong>✨ Attire:</strong> South Indian Traditional or standard Traditional Kurta/Nehru Jacket.
-                </div>
-            </div>
-
-            <div class="event-card misc">
-                <h3 class="event-title">Miscellaneous Events</h3>
-                <p>Various rituals and relaxing gatherings.</p>
-                <div class="dress-code">
-                    <strong>🎒 Note:</strong> Please pack two extra pairs of simple clothes (pant/shirt or sarees) for random events and safety!
-                </div>
-            </div>
-
+    <div class="parallax-section hero">
+        <div class="overlay"></div>
+        <div class="content">
+            <p style="letter-spacing: 10px; margin-bottom: 20px;">OM SHREE GANESHAYA NAMAH</p>
+            <h1>HITARTH <span style="font-size: 1.5rem; vertical-align: middle;">&</span> <span class="cursive">S Chitra</span></h1>
+            <p style="font-size: 1.2rem; letter-spacing: 4px; color: var(--gold);">TOGETHER WITH THEIR FAMILIES</p>
         </div>
     </div>
 
-    <a href="https://wa.me/919876543210?text=Hello%20Hitarth!%20I%20am%20so%20excited%20to%20RSVP%20for%20your%20and%20Chitra's%20wedding.%20See%20you%20there!" target="_blank" class="rsvp-btn">
-        <span>RSVP via WhatsApp</span>
-    </a>
+    <section class="deity-section">
+        <div class="god-container">
+            <img src="https://i.imgur.com/8N6h1rW.png" class="god-img" alt="Ganesh">
+            <img src="https://i.imgur.com/vHqY7Zq.png" class="god-img" alt="Shiva" style="animation-delay: 1s;">
+        </div>
+        <div class="content">
+            <p class="family-list">
+                <strong>Manojbhai Joshi & Hina Joshi</strong><br>
+                invite you to the wedding of their son<br>
+                <span class="cursive">Hitarth</span><br>
+                With<br>
+                <span class="cursive">S Chitra (Parvati)</span><br>
+                Daughter of <strong>G Shivraj & S Vijayalakshmi</strong>
+            </p>
+        </div>
+    </section>
 
+    <div class="parallax-section bg-mehndi">
+        <div class="overlay"></div>
+        <div class="content">
+            <div class="event-box">
+                <h2 class="event-title">Mehndi</h2>
+                <p>Starting the festivities with patterns of love.</p>
+                <div class="dress-code">
+                    Ladies: Green or Brown <br>
+                    Gents: Mint colors or Simple Pant/Shirt
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="parallax-section bg-haldi">
+        <div class="overlay"></div>
+        <div class="content">
+            <div class="event-box">
+                <h2 class="event-title">Haldi</h2>
+                <p>Blessing the couple with the glow of tradition.</p>
+                <div class="dress-code">
+                    Ladies: Pink, Blue, Orange (Mixed) <br>
+                    Gents: Traditional Kurta
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="parallax-section bg-sangeet">
+        <div class="overlay"></div>
+        <div class="content">
+            <div class="event-box">
+                <h2 class="event-title">Sangeet & Dandiya</h2>
+                <p>A night of music, dance, and celebration.</p>
+                <div class="dress-code">
+                    Ladies: Lehengas / Gowns <br>
+                    Gents: Indo-Western / Nehru Jacket
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="parallax-section bg-wedding">
+        <div class="overlay"></div>
+        <div class="content">
+            <div class="event-box">
+                <h2 class="event-title">The Wedding</h2>
+                <p>Join us as we take our sacred vows.</p>
+                <div class="dress-code">
+                    Attire: South Indian Traditional <br>
+                    or Normal Traditional Kurta
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="deity-section" style="padding-bottom: 120px;">
+        <div class="content visible">
+            <h2 class="event-title" style="font-size: 1.5rem;">With Love & Best Compliments</h2>
+            <p class="family-list" style="font-size: 0.95rem;">
+                Ajay Joshi (Brother)<br>
+                Revathi Shivraj & Midhun Mohan<br>
+                The Joshi & Shivraj Families
+            </p>
+        </div>
+    </section>
+
+    <a href="https://wa.me/917226016163?text=Namaste!%20I%20would%20love%20to%20attend%20Hitarth%20and%20Chitra's%20wedding!" class="rsvp-btn" target="_blank">RSVP ON WHATSAPP</a>
+
+    <script>
+        // Smooth Reveal Logic
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.2 });
+
+        document.querySelectorAll('.content').forEach(el => observer.observe(el));
+    </script>
 </body>
 </html>
