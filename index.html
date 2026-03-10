@@ -623,17 +623,19 @@
             .engagement-img-wrap { aspect-ratio: 3/4; }
         }
         .carousel-section {
-            width: 100%;
-            max-width: 1000px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
+            width: 100% !important;
+            max-width: 100% !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
         }
 
+
         .carousel-outer {
+            width: min(960px, 92vw) !important;
+            margin: 0 auto !important;   /* ← this centers it */
             position: relative;
-            width: 100%;
+            padding: 0 30px;
         }
 
         /* ── THE VIEWPORT — this is the only visible window ── */
@@ -705,16 +707,16 @@
 
         
         .carousel-slide {
-            flex: 0 0 100%;            /* grow:0  shrink:0  basis:100% — never change size */
-            width: 100%;
-            position: relative;
-            overflow: hidden;
-            background: #000;
-            aspect-ratio: 4 / 3;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            flex: 0 0 100% !important;
+            width: 100% !important;
+            min-width: 0 !important;
+            aspect-ratio: 3 / 2 !important;
+            overflow: hidden !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            background: #000 !important;
+            position: relative !important;
         }
 
         .slide-bg {
@@ -742,16 +744,16 @@
         }
 
         .carousel-slide img {
-            position: relative;
-            z-index: 1;
-            display: block;
-            /* These four lines together prevent ANY zoom */
-            width: 100%;
-            height: 100%;
-            object-fit: contain;       /* show whole image */
-            object-position: center;
-            pointer-events: none;
-            -webkit-user-drag: none;
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: contain !important;
+            object-position: center !important;
+            display: block !important;
+            position: relative !important;
+            z-index: 1 !important;
+            /* These two lines PREVENT zoom */
+            max-width: 100% !important;
+            max-height: 100% !important;
         }
 
         .carousel-btn {
@@ -1021,29 +1023,29 @@
             3. Done — works with any image shape/size
             -->
 
-            <div class="carousel-slide">
+            <!-- <div class="carousel-slide">
             <div class="slide-bg" style="background-image:url('IMG-20260310-WA0003.jpg')"></div>
             <img src="IMG-20260310-WA0003.jpg" alt="Moment 1" draggable="false">
-            </div>
+            </div> -->
 
             <div class="carousel-slide">
             <div class="slide-bg" style="background-image:url('IMG-20260310-WA0017.jpg')"></div>
-            <img src="IMG-20260310-WA0017.jpg" alt="Moment 2" draggable="false">
+            <img src="IMG-20260310-WA0017.jpg" alt="Moment 1" draggable="false">
             </div>
 
             <div class="carousel-slide">
             <div class="slide-bg" style="background-image:url('IMG-20260310-WA0020.jpg')"></div>
-            <img src="IMG-20260310-WA0020.jpg" alt="Moment 3" draggable="false">
+            <img src="IMG-20260310-WA0020.jpg" alt="Moment 2" draggable="false">
             </div>
 
             <div class="carousel-slide">
             <div class="slide-bg" style="background-image:url('Snapchat-646290219.jpg')"></div>
-            <img src="Snapchat-646290219.jpg" alt="Moment 4" draggable="false">
+            <img src="Snapchat-646290219.jpg" alt="Moment 3" draggable="false">
             </div>
 
             <div class="carousel-slide">
             <div class="slide-bg" style="background-image:url('Snapchat-693892685.jpg')"></div>
-            <img src="Snapchat-693892685.jpg" alt="Moment 5" draggable="false">
+            <img src="Snapchat-693892685.jpg" alt="Moment 4" draggable="false">
             </div>
 
         </div><!-- /strip -->
