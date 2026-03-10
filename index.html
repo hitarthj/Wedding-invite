@@ -650,12 +650,12 @@
 
         .carousel-wrapper {
             position: relative;
-            width: min(880px, 92vw);
+            width: min(1100px, 95vw);  /* wider */
             z-index: 1;
         }
 
         .carousel-track-outer {
-            overflow: hidden;
+            overflow: hidden;  /* THIS clips all slides outside view */
             border: 1px solid var(--gold-dim);
             box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(201,168,76,0.06) inset;
         }
@@ -666,6 +666,7 @@
             will-change: transform;
             cursor: grab;
             user-select: none;
+            /* REMOVE any width or flex-wrap if present */
         }
 
         .carousel-track.dragging {
@@ -675,9 +676,11 @@
 
         
         .carousel-slide {
-            aspect-ratio: 16 / 9;
+            min-width: 100%;
+            flex-shrink: 0;
             position: relative;
-            background: #0a0a0a;
+            aspect-ratio: 4 / 3;  /* taller slides */
+            overflow: hidden;
         }
 
         /* Blurred background layer */
