@@ -710,7 +710,11 @@
             position: relative;
             overflow: hidden;
             background: #000;
-            aspect-ratio: 16 / 9;
+            aspect-ratio: 4 / 3;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .slide-bg {
@@ -741,10 +745,13 @@
             position: relative;
             z-index: 1;
             display: block;
+            /* These four lines together prevent ANY zoom */
             width: 100%;
             height: 100%;
-            object-fit: contain;      /* full image, no crop, no zoom */
+            object-fit: contain;       /* show whole image */
+            object-position: center;
             pointer-events: none;
+            -webkit-user-drag: none;
         }
 
         .carousel-btn {
@@ -979,7 +986,20 @@
 
     <!-- Carousal -->
     <section class="carousel-section">
+    
+        <!-- Header -->
+        <div class="carousel-header" style="text-align:center; position:relative; z-index:1;">
+            <span class="section-tag">Our Story</span>
+            <h2 class="section-title">Moments</h2>
+        </div>
 
+        <!-- Divider -->
+        <div class="divider" style="display:flex; align-items:center; gap:16px; width:100%; justify-content:center;">
+            <span style="flex:1; height:1px; background:var(--gold-dim);"></span>
+            <span style="color:var(--gold); font-size:14px;">✦</span>
+            <span style="flex:1; height:1px; background:var(--gold-dim);"></span>
+        </div>
+    
     <div class="carousel-outer">
 
         <button class="carousel-btn prev" aria-label="Previous">
