@@ -623,14 +623,43 @@
             .engagement-img-wrap { aspect-ratio: 3/4; }
         }
         .carousel-section {
-            padding: 120px 24px;
-            background: var(--bg2);
+            width: 100%;
+            max-width: 1000px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 40px;
+            gap: 20px;
+        }
+
+        .carousel-outer {
             position: relative;
-            overflow: hidden;
+            width: 100%;
+        }
+
+        /* ── THE VIEWPORT — this is the only visible window ── */
+        .carousel-viewport {
+            width: 100%;
+            overflow: hidden;          /* CRITICAL — hides all off-screen slides */
+            border: 1px solid var(--gold-dim);
+            border-radius: 6px;
+            background: #000;
+        }
+
+        /* ── THE STRIP — all slides sit here in a single horizontal row ── */
+        .carousel-strip {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;         /* NEVER wrap to next line */
+            transition: transform 0.55s cubic-bezier(0.77,0,0.18,1);
+            will-change: transform;
+            cursor: grab;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        .carousel-strip.is-dragging {
+            transition: none;
+            cursor: grabbing;
         }
 
         /* Same watermark style as .blessings::before */
@@ -676,15 +705,22 @@
 
         
         .carousel-slide {
-            min-width: 100%;
-            flex-shrink: 0;
+            flex: 0 0 100%;            /* grow:0  shrink:0  basis:100% — never change size */
+            width: 100%;
             position: relative;
+            overflow: hidden;
+            background: #000;
             aspect-ratio: 16 / 9;
-            overflow: hidden;          /* ← keeps blur contained */
-            background: #0a0a0a;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        }
+
+        .slide-bg {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            filter: blur(22px) brightness(0.28);
+            transform: scale(1.12);   /* hide blur edge fringing */
+            z-index: 0;
         }
 
         /* Blurred background layer */
@@ -704,13 +740,42 @@
         .carousel-slide img {
             position: relative;
             z-index: 1;
+            display: block;
             width: 100%;
             height: 100%;
-            object-fit: contain;       /* full image, no crop */
-            display: block;
+            object-fit: contain;      /* full image, no crop, no zoom */
             pointer-events: none;
-            transition: transform 0.5s ease;
         }
+
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 30;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 1.5px solid var(--gold);
+            background: rgba(0,0,0,0.72);
+            color: var(--gold);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            transition: background 0.2s, transform 0.2s;
+        }
+
+        .carousel-btn:hover {
+            background: rgba(201,168,76,0.18);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .carousel-btn svg { width: 18px; height: 18px; pointer-events: none; }
+
+        .carousel-btn.prev { left: -22px; }
+        .carousel-btn.next { right: -22px; }
 
         .carousel-slide img {
             width: 100%;
@@ -766,11 +831,27 @@
         /* Dot indicators */
         .carousel-dots {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             align-items: center;
             justify-content: center;
-            position: relative;
-            z-index: 1;
+            flex-wrap: wrap;
+        }
+
+        .carousel-dots button {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            border: none;
+            background: var(--gold-dim);
+            cursor: pointer;
+            padding: 0;
+            transition: background 0.3s, width 0.3s, border-radius 0.3s;
+        }
+
+        .carousel-dots button.active {
+            background: var(--gold);
+            width: 24px;
+            border-radius: 4px;
         }
 
         .carousel-dot {
@@ -792,29 +873,45 @@
 
         /* Progress bar — uses same gold gradient logic */
         .carousel-progress {
-            width: min(880px, 92vw);
-            height: 1px;
-            background: rgba(201, 168, 76, 0.1);
-            position: relative;
-            z-index: 1;
+            width: 100%;
+            height: 2px;
+            background: rgba(201,168,76,0.1);
+            border-radius: 2px;
+            overflow: hidden;
         }
 
         .carousel-progress-fill {
             height: 100%;
+            width: 0%;
             background: linear-gradient(90deg, var(--gold-dim), var(--gold));
             transition: width 0.1s linear;
-            width: 0%;
+            border-radius: 2px;
         }
 
-        @media (max-width: 900px) {
+        /* Tablet — bring arrows inside so they don't clip */
+        @media (max-width: 800px) {
+            .carousel-btn.prev { left: 8px; }
+            .carousel-btn.next { right: 8px; }
+            .carousel-btn { background: rgba(0,0,0,0.85); }
+        }
+
+
+        /* Large mobile */
+        @media (max-width: 600px) {
             .carousel-slide { aspect-ratio: 4 / 3; }
-            .carousel-arrow.prev { left: 8px; }
-            .carousel-arrow.next { right: 8px; }
+            .carousel-btn { width: 36px; height: 36px; }
+            .carousel-btn svg { width: 14px; height: 14px; }
         }
 
-        @media (max-width: 480px) {
+        /* Small mobile */
+        @media (max-width: 420px) {
             .carousel-slide { aspect-ratio: 1 / 1; }
+            .carousel-btn { width: 30px; height: 30px; }
+            .carousel-btn svg { width: 12px; height: 12px; }
+            .carousel-dots button { width: 6px; height: 6px; }
+            .carousel-dots button.active { width: 16px; }
         }
+
     </style>
 </head>
 <body>
@@ -880,46 +977,72 @@
 <!-- ═══════════════════════════════════════════ EVENTS -->
 <section class="timeline">
 
-    <!-- MEHNDI -->
+    <!-- Carousal -->
     <section class="carousel-section">
 
-        <div class="carousel-header reveal">
-            <span class="section-tag">Our Story</span>
-            <h2 class="section-title">Moments</h2>
-        </div>
+    <div class="carousel-outer">
 
-        <div class="divider reveal">
-            <span class="divider-icon">✦</span>
-        </div>
+        <button class="carousel-btn prev" aria-label="Previous">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+            stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6"/>
+        </svg>
+        </button>
 
-        <div class="carousel-wrapper reveal">
-            <button class="carousel-arrow prev" aria-label="Previous slide" onclick="carouselPrev()">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="15 18 9 12 15 6"/>
-                </svg>
-            </button>
+        <!-- Visible window -->
+        <div class="carousel-viewport">
+        <!-- Horizontal strip of slides -->
+        <div class="carousel-strip" id="strip">
 
-            <div class="carousel-track-outer">
-                <div class="carousel-track" id="carouselTrack">
-                    <!-- ↓↓↓ ADD YOUR IMAGES HERE — duplicate lines as needed ↓↓↓ -->
-                    <div class="carousel-slide" style="--slide-bg: url('IMG-20260310-WA0003.jpg')"><img src="IMG-20260310-WA0003.jpg" alt="Moment 1" draggable="false"></div>
-                    <div class="carousel-slide" style="--slide-bg: url('IMG-20260310-WA0017.jpg')"><img src="IMG-20260310-WA0017.jpg" alt="Moment 2" draggable="false"></div>
-                    <div class="carousel-slide" style="--slide-bg: url('IMG-20260310-WA0020.jpg')"><img src="IMG-20260310-WA0020.jpg" alt="Moment 3" draggable="false"></div>
-                    <div class="carousel-slide" style="--slide-bg: url('Snapchat-646290219.jpg')"><img src="Snapchat-646290219.jpg" alt="Moment 4" draggable="false"></div>
-                    <div class="carousel-slide" style="--slide-bg: url('Snapchat-693892685.jpg')"><img src="Snapchat-693892685.jpg" alt="Moment 5" draggable="false"></div>
-                    <!-- ↑↑↑ END IMAGES ↑↑↑ -->
-                </div>
+            <!--
+            HOW TO ADD SLIDES:
+            1. Copy one <div class="carousel-slide"> block
+            2. Set both background-image URL and img src to your image path
+            3. Done — works with any image shape/size
+            -->
+
+            <div class="carousel-slide">
+            <div class="slide-bg" style="background-image:url('IMG-20260310-WA0003.jpg')"></div>
+            <img src="IMG-20260310-WA0003.jpg" alt="Moment 1" draggable="false">
             </div>
 
-            <button class="carousel-arrow next" aria-label="Next slide" onclick="carouselNext()">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="9 18 15 12 9 6"/>
-                </svg>
-            </button>
-        </div>
+            <div class="carousel-slide">
+            <div class="slide-bg" style="background-image:url('IMG-20260310-WA0017.jpg')"></div>
+            <img src="IMG-20260310-WA0017.jpg" alt="Moment 2" draggable="false">
+            </div>
 
-        <div class="carousel-dots" id="carouselDots"></div>
-        <div class="carousel-progress"><div class="carousel-progress-fill" id="carouselFill"></div></div>
+            <div class="carousel-slide">
+            <div class="slide-bg" style="background-image:url('IMG-20260310-WA0020.jpg')"></div>
+            <img src="IMG-20260310-WA0020.jpg" alt="Moment 3" draggable="false">
+            </div>
+
+            <div class="carousel-slide">
+            <div class="slide-bg" style="background-image:url('Snapchat-646290219.jpg')"></div>
+            <img src="Snapchat-646290219.jpg" alt="Moment 4" draggable="false">
+            </div>
+
+            <div class="carousel-slide">
+            <div class="slide-bg" style="background-image:url('Snapchat-693892685.jpg')"></div>
+            <img src="Snapchat-693892685.jpg" alt="Moment 5" draggable="false">
+            </div>
+
+        </div><!-- /strip -->
+        </div><!-- /viewport -->
+
+        <button class="carousel-btn next" aria-label="Next">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+            stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 18 15 12 9 6"/>
+        </svg>
+        </button>
+
+    </div><!-- /outer -->
+
+    <div class="carousel-dots" id="dots"></div>
+
+    <div class="carousel-progress">
+        <div class="carousel-progress-fill" id="prog"></div>
+    </div>
 
     </section>
 
