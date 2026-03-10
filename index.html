@@ -82,7 +82,7 @@
         .hero-bg {
             position: absolute;
             inset: 0;
-            background-image: url('https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=2000');
+            background-image: url('bkimage.avif');
             background-size: cover;
             background-position: center 30%;
             transform: scale(1.08);
@@ -622,6 +622,188 @@
             .count-sep { padding: 0 3px; }
             .engagement-img-wrap { aspect-ratio: 3/4; }
         }
+        .carousel-section {
+            padding: 120px 24px;
+            background: var(--bg2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Same watermark style as .blessings::before */
+        .carousel-section::before {
+            content: '✦';
+            position: absolute;
+            top: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 200px;
+            color: var(--gold-dim);
+            pointer-events: none;
+            line-height: 1;
+        }
+
+        .carousel-header { text-align: center; position: relative; z-index: 1; }
+
+        .carousel-wrapper {
+            position: relative;
+            width: min(880px, 92vw);
+            z-index: 1;
+        }
+
+        .carousel-track-outer {
+            overflow: hidden;
+            border: 1px solid var(--gold-dim);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(201,168,76,0.06) inset;
+        }
+
+        .carousel-track {
+            display: flex;
+            transition: transform 0.65s cubic-bezier(0.77, 0, 0.18, 1);
+            will-change: transform;
+            cursor: grab;
+            user-select: none;
+        }
+
+        .carousel-track.dragging {
+            transition: none;
+            cursor: grabbing;
+        }
+
+        
+        .carousel-slide {
+            aspect-ratio: 16 / 9;
+            position: relative;
+            background: #0a0a0a;
+        }
+
+        /* Blurred background layer */
+        .carousel-slide::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: var(--slide-bg);
+            background-size: cover;
+            background-position: center;
+            filter: blur(20px) brightness(0.4);
+            transform: scale(1.1); /* prevents blur edge bleed */
+            z-index: 0;
+        }
+
+        .carousel-slide img {
+            position: relative;
+            z-index: 1;
+            object-fit: contain;
+            width: 100%;
+            height: 100%;
+        }
+
+        .carousel-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            pointer-events: none;
+            filter: brightness(0.9) sepia(8%);
+            transition: filter 0.5s ease;
+        }
+
+        .carousel-slide:hover img { filter: brightness(1) sepia(0%); }
+
+        /* Same gradient vignette as .event-img-wrap::after */
+        .carousel-slide::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, transparent 55%, rgba(8,8,8,0.6) 100%);
+            pointer-events: none;
+        }
+
+        /* Arrow buttons — same style as .music-btn */
+        .carousel-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 1.5px solid var(--gold);
+            background: rgba(8, 8, 8, 0.75);
+            color: var(--gold);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        .carousel-arrow:hover {
+            background: rgba(201, 168, 76, 0.15);
+            transform: translateY(-50%) scale(1.08);
+        }
+
+        .carousel-arrow.prev { left: -22px; }
+        .carousel-arrow.next { right: -22px; }
+        .carousel-arrow svg { width: 16px; height: 16px; }
+
+        /* Dot indicators */
+        .carousel-dots {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .carousel-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--gold-dim);
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            transition: background 0.3s, width 0.3s;
+        }
+
+        .carousel-dot.active {
+            background: var(--gold);
+            width: 22px;
+            border-radius: 3px;
+        }
+
+        /* Progress bar — uses same gold gradient logic */
+        .carousel-progress {
+            width: min(880px, 92vw);
+            height: 1px;
+            background: rgba(201, 168, 76, 0.1);
+            position: relative;
+            z-index: 1;
+        }
+
+        .carousel-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--gold-dim), var(--gold));
+            transition: width 0.1s linear;
+            width: 0%;
+        }
+
+        @media (max-width: 900px) {
+            .carousel-slide { aspect-ratio: 4 / 3; }
+            .carousel-arrow.prev { left: 8px; }
+            .carousel-arrow.next { right: 8px; }
+        }
+
+        @media (max-width: 480px) {
+            .carousel-slide { aspect-ratio: 1 / 1; }
+        }
     </style>
 </head>
 <body>
@@ -680,12 +862,55 @@
         <p>along with</p>
         <p><b>Mrs. S Vijaya & Mr. G Shivraj</b></p>
         <p>cordially invite you to celebrate the union of</p>
-        <p class="couple-name">Hitarth & Chitra</p><p style="font-size:1rem; letter-spacing: 2px; color: var(--text-dim);">(Parvati)</p>
+        <p class="couple-name">Hitarth & Chitra (Parvati)</p>
     </div>
 </section>
 
 <!-- ═══════════════════════════════════════════ EVENTS -->
 <section class="timeline">
+
+    <!-- MEHNDI -->
+    <section class="carousel-section">
+
+        <div class="carousel-header reveal">
+            <span class="section-tag">Our Story</span>
+            <h2 class="section-title">Moments</h2>
+        </div>
+
+        <div class="divider reveal">
+            <span class="divider-icon">✦</span>
+        </div>
+
+        <div class="carousel-wrapper reveal">
+            <button class="carousel-arrow prev" aria-label="Previous slide" onclick="carouselPrev()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="15 18 9 12 15 6"/>
+                </svg>
+            </button>
+
+            <div class="carousel-track-outer">
+                <div class="carousel-track" id="carouselTrack">
+                    <!-- ↓↓↓ ADD YOUR IMAGES HERE — duplicate lines as needed ↓↓↓ -->
+                    <div class="carousel-slide" style="--slide-bg: url('IMG-20260310-WA0003.jpg')"><img src="IMG-20260310-WA0003.jpg" alt="Moment 1" draggable="false"></div>
+                    <div class="carousel-slide" style="--slide-bg: url('IMG-20260310-WA0017.jpg')"><img src="IMG-20260310-WA0017.jpg" alt="Moment 2" draggable="false"></div>
+                    <div class="carousel-slide" style="--slide-bg: url('IMG-20260310-WA0020.jpg')"><img src="IMG-20260310-WA0020.jpg" alt="Moment 3" draggable="false"></div>
+                    <div class="carousel-slide" style="--slide-bg: url('Snapchat-646290219.jpg')"><img src="Snapchat-646290219.jpg" alt="Moment 4" draggable="false"></div>
+                    <div class="carousel-slide" style="--slide-bg: url('Snapchat-693892685.jpg')"><img src="Snapchat-693892685.jpg" alt="Moment 5" draggable="false"></div>
+                    <!-- ↑↑↑ END IMAGES ↑↑↑ -->
+                </div>
+            </div>
+
+            <button class="carousel-arrow next" aria-label="Next slide" onclick="carouselNext()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="9 18 15 12 9 6"/>
+                </svg>
+            </button>
+        </div>
+
+        <div class="carousel-dots" id="carouselDots"></div>
+        <div class="carousel-progress"><div class="carousel-progress-fill" id="carouselFill"></div></div>
+
+    </section>
 
     <!-- MEHNDI -->
     <div class="event">
@@ -781,6 +1006,112 @@
     </div>
 
 </section>
+
+<script>
+(function () {
+    const track   = document.getElementById('carouselTrack');
+    const dotsEl  = document.getElementById('carouselDots');
+    const fill    = document.getElementById('carouselFill');
+    const slides  = track.querySelectorAll('.carousel-slide');
+    const total   = slides.length;
+    const DELAY   = 4500;
+
+    let current = 0, rafId, progStart, elapsed = 0, dragging = false;
+
+    // ── Dots ────────────────────────────────────────────────
+    slides.forEach((_, i) => {
+        const d = document.createElement('button');
+        d.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+        d.setAttribute('aria-label', `Go to slide ${i + 1}`);
+        d.onclick = () => goTo(i);
+        dotsEl.appendChild(d);
+    });
+
+    function updateDots() {
+        dotsEl.querySelectorAll('.carousel-dot').forEach((d, i) =>
+            d.classList.toggle('active', i === current));
+    }
+
+    // ── Navigate ─────────────────────────────────────────────
+    function goTo(index) {
+        current = (index + total) % total;
+        track.style.transform = `translateX(-${current * 100}%)`;
+        updateDots();
+        restartAuto();
+    }
+
+    window.carouselPrev = () => goTo(current - 1);
+    window.carouselNext = () => goTo(current + 1);
+
+    // ── Progress bar + auto-advance ──────────────────────────
+    function tick(now) {
+        elapsed = now - progStart;
+        fill.style.width = Math.min((elapsed / DELAY) * 100, 100) + '%';
+        if (elapsed < DELAY) { rafId = requestAnimationFrame(tick); }
+        else { elapsed = 0; goTo(current + 1); }
+    }
+
+    function startAuto() {
+        progStart = performance.now() - elapsed;
+        rafId = requestAnimationFrame(tick);
+    }
+
+    function stopAuto() { cancelAnimationFrame(rafId); }
+
+    function restartAuto() {
+        stopAuto();
+        elapsed = 0;
+        fill.style.width = '0%';
+        startAuto();
+    }
+
+    // ── Pause on hover ────────────────────────────────────────
+    track.addEventListener('mouseenter', stopAuto);
+    track.addEventListener('mouseleave', () => { if (!dragging) startAuto(); });
+
+    // ── Drag / swipe ──────────────────────────────────────────
+    let startX = 0, delta = 0;
+
+    function dragStart(x) {
+        startX = x; delta = 0; dragging = true;
+        track.classList.add('dragging');
+        stopAuto();
+    }
+
+    function dragMove(x) {
+        if (!dragging) return;
+        delta = x - startX;
+        track.style.transform = `translateX(calc(-${current * 100}% + ${delta}px))`;
+    }
+
+    function dragEnd() {
+        if (!dragging) return;
+        dragging = false;
+        track.classList.remove('dragging');
+        const threshold = track.offsetWidth * 0.2;
+        if      (delta < -threshold) goTo(current + 1);
+        else if (delta >  threshold) goTo(current - 1);
+        else goTo(current);
+    }
+
+    track.addEventListener('mousedown',  e => dragStart(e.clientX));
+    window.addEventListener('mousemove', e => { if (dragging) dragMove(e.clientX); });
+    window.addEventListener('mouseup',   dragEnd);
+
+    track.addEventListener('touchstart', e => dragStart(e.touches[0].clientX), { passive: true });
+    track.addEventListener('touchmove',  e => dragMove(e.touches[0].clientX),  { passive: true });
+    track.addEventListener('touchend',   dragEnd);
+
+    // ── Keyboard ──────────────────────────────────────────────
+    document.addEventListener('keydown', e => {
+        if (e.key === 'ArrowLeft')  carouselPrev();
+        if (e.key === 'ArrowRight') carouselNext();
+    });
+
+    // ── Start ─────────────────────────────────────────────────
+    startAuto();
+})();
+</script>
 
 <!-- ═══════════════════════════════════════════ FOOTER -->
 <section class="footer">
@@ -922,10 +1253,10 @@
 
 <div class="music-player" id="musicPlayer">
     <button class="music-btn" id="playPauseBtn" aria-label="Play/Pause music" onclick="toggleMusic()">
-        <svg id="playIcon" xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="currentColor">
+        <svg id="playIcon" xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="currentColor" style="display:none">
             <polygon points="5,3 19,12 5,21"/>
         </svg>
-        <svg id="pauseIcon" xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="currentColor" style="display:none">
+        <svg id="pauseIcon" xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="currentColor">
             <rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>
         </svg>
     </button>
@@ -935,21 +1266,43 @@
     const audio = document.getElementById('bgAudio');
     let isPlaying = false;
 
+    function setPlaying(state) {
+        isPlaying = state;
+        document.getElementById('playIcon').style.display = state ? 'none' : 'block';
+        document.getElementById('pauseIcon').style.display = state ? 'block' : 'none';
+        const bars = document.getElementById('musicBars');
+        if (bars) bars.classList.toggle('playing', state);
+    }
+
     function toggleMusic() {
         if (!isPlaying) {
             audio.play();
-            isPlaying = true;
-            document.getElementById('playIcon').style.display = 'none';
-            document.getElementById('pauseIcon').style.display = 'block';
-            document.getElementById('musicBars').classList.add('playing');
+            setPlaying(true);
         } else {
             audio.pause();
-            isPlaying = false;
-            document.getElementById('playIcon').style.display = 'block';
-            document.getElementById('pauseIcon').style.display = 'none';
-            document.getElementById('musicBars').classList.remove('playing');
+            setPlaying(false);
         }
     }
+
+    // Autoplay on first user interaction (required by browsers)
+    function startOnInteraction() {
+        audio.play().then(() => {
+            setPlaying(true);
+        }).catch(() => {});
+        document.removeEventListener('click', startOnInteraction);
+        document.removeEventListener('keydown', startOnInteraction);
+        document.removeEventListener('touchstart', startOnInteraction);
+    }
+
+    // Try immediate autoplay first, fall back to interaction-triggered
+    audio.play().then(() => {
+        setPlaying(true);
+    }).catch(() => {
+        // Browser blocked autoplay — wait for any user interaction
+        document.addEventListener('click', startOnInteraction);
+        document.addEventListener('keydown', startOnInteraction);
+        document.addEventListener('touchstart', startOnInteraction);
+    });
 </script>
 
 </body>
