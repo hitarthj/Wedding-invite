@@ -1841,7 +1841,7 @@
         document.addEventListener('click', startOnInteraction);
         document.addEventListener('keydown', startOnInteraction);
         document.addEventListener('touchstart', startOnInteraction);
-        document.removeEventListener('scroll',     startOnInteraction);
+        document.addEventListener('scroll',     startOnInteraction);
     });
 </script>
 
