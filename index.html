@@ -1044,6 +1044,11 @@
             <img src="Snapchat-693892685.jpg" alt="Moment 5" draggable="false">
             </div>
 
+            <div class="carousel-slide">
+            <div class="slide-bg" style="background-image:url('IMG-20260310-WA0015.jpg')"></div>
+            <img src="IMG-20260310-WA0015.jpg" alt="Moment 5" draggable="false">
+            </div>
+
         </div><!-- /strip -->
         </div><!-- /viewport -->
 
@@ -1463,6 +1468,7 @@
         document.removeEventListener('click', startOnInteraction);
         document.removeEventListener('keydown', startOnInteraction);
         document.removeEventListener('touchstart', startOnInteraction);
+        document.removeEventListener('scroll',     startOnInteraction);
     }
 
     // Try immediate autoplay first, fall back to interaction-triggered
@@ -1473,6 +1479,7 @@
         document.addEventListener('click', startOnInteraction);
         document.addEventListener('keydown', startOnInteraction);
         document.addEventListener('touchstart', startOnInteraction);
+        document.removeEventListener('scroll',     startOnInteraction);
     });
 </script>
 
