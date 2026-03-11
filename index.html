@@ -961,97 +961,76 @@
         overflow: hidden;
         }
 
-        /* ── Wrapper per lantern ── */
         .lntn {
         position: absolute;
         display: flex;
         flex-direction: column;
         align-items: center;
-        will-change: transform;
+        opacity: 0;
+        /* JS drives position & animation via inline styles */
         }
 
-        /* ── String above the orb ── */
         .lntn-string {
         width: 1px;
-        background: linear-gradient(to bottom, rgba(201,168,76,0.45), transparent);
-        /* height set inline */
+        height: 32px;
+        background: linear-gradient(to bottom, rgba(255,255,255,0.3), transparent);
+        flex-shrink: 0;
         }
 
-        /* ── The glowing orb ── */
         .lntn-orb {
         position: relative;
         border-radius: 50% 50% 46% 46% / 55% 55% 45% 45%;
-        background: radial-gradient(ellipse at 38% 32%,
-            rgba(255, 228, 120, 0.98) 0%,
-            rgba(255, 165, 40,  0.90) 40%,
-            rgba(210,  80, 15,  0.70) 75%,
-            rgba(150,  40,  5,  0.50) 100%
-        );
-        box-shadow:
-            0 0 12px  5px  rgba(255, 190,  60, 0.55),
-            0 0 30px  12px rgba(255, 130,  20, 0.35),
-            0 0 65px  28px rgba(255,  90,   0, 0.18),
-            0 0 100px 40px rgba(255,  60,   0, 0.08),
-            inset 0 -8px 16px rgba(170, 50, 0, 0.35),
-            inset 5px 5px 14px rgba(255, 245, 190, 0.45);
-        animation: lntnFloat var(--fd) ease-in-out infinite alternate;
+        flex-shrink: 0;
         }
 
-        /* Gloss highlight */
+        /* Gloss */
         .lntn-orb::before {
         content: '';
         position: absolute;
-        top: 12%;
-        left: 18%;
-        width: 32%;
-        height: 28%;
-        background: radial-gradient(ellipse, rgba(255,255,230,0.75) 0%, transparent 70%);
+        top: 12%; left: 18%;
+        width: 30%; height: 26%;
+        background: radial-gradient(ellipse, rgba(255,255,255,0.7) 0%, transparent 70%);
         border-radius: 50%;
         }
 
-        /* Bottom crease line */
+        /* Crease */
         .lntn-orb::after {
         content: '';
         position: absolute;
-        bottom: 20%;
-        left: 50%;
+        bottom: 22%; left: 50%;
         transform: translateX(-50%);
-        width: 55%;
-        height: 1.5px;
-        background: rgba(160, 60, 0, 0.4);
+        width: 52%; height: 1.5px;
+        background: rgba(0,0,0,0.25);
         border-radius: 50%;
         }
 
-        /* ── Flame glow beneath orb ── */
         .lntn-flame {
         position: absolute;
-        bottom: -5px;
-        left: 50%;
+        bottom: -4px; left: 50%;
         transform: translateX(-50%);
-        width: 45%;
-        height: 10px;
-        background: radial-gradient(ellipse, rgba(255,210,60,0.95) 0%, transparent 70%);
+        width: 40%; height: 9px;
         border-radius: 50%;
         filter: blur(3px);
-        animation: lntnFlicker var(--fk) ease-in-out infinite alternate;
         }
 
-        /* ── Idle float ── */
-        @keyframes lntnFloat {
-        0%   { transform: translate(0px,      0px)      rotate(var(--r0)); }
-        100% { transform: translate(var(--sx), var(--sy)) rotate(var(--r1)); }
+        /* Sway side to side while rising */
+        @keyframes lntnSway {
+        0%   { margin-left: 0px; }
+        25%  { margin-left: var(--sw); }
+        75%  { margin-left: calc(var(--sw) * -1); }
+        100% { margin-left: 0px; }
         }
 
-        /* ── Flame flicker ── */
-        @keyframes lntnFlicker {
-        0%   { opacity: 0.65; transform: translateX(-50%) scale(0.9);  }
-        100% { opacity: 1.00; transform: translateX(-50%) scale(1.35); }
+        /* Blink / pulse glow */
+        @keyframes lntnBlink {
+        0%,100% { filter: brightness(1)   drop-shadow(0 0 8px  var(--gc)); }
+        50%     { filter: brightness(1.4) drop-shadow(0 0 20px var(--gc)); }
         }
 
-        /* ── Mobile: reduce to 3 per side, lower opacity ── */
-        @media (max-width: 600px) {
-        .lntn { opacity: 0.55; }
-        .lntn.hide-mobile { display: none; }
+        /* Flame flicker */
+        @keyframes flameFlick {
+        0%,100% { opacity: 0.7; transform: translateX(-50%) scaleX(1);   }
+        50%     { opacity: 1.0; transform: translateX(-50%) scaleX(1.4); }
         }
 
 
@@ -1086,123 +1065,209 @@
 
 <div id="lantern-layer" aria-hidden="true"></div>
 
+
 <script>
 (function () {
 
   const layer = document.getElementById('lantern-layer');
 
-  /*
-    LANTERN CONFIG
-    ─────────────
-    side        'left' | 'right'
-    offsetX     px from the edge (left edge for left, right edge for right)
-    topVh       initial vertical position in vh
-    size        orb diameter in px
-    stringH     string length in px above the orb
-    floatDur    idle sway cycle in seconds
-    swayX       horizontal sway distance px (+ = right, - = left)
-    swayY       vertical sway distance px   (negative = up)
-    r0 / r1     rotation start / end (CSS angle strings)
-    flickDur    flame flicker cycle in seconds
-    parallax    scroll multiplier (higher = moves faster on scroll)
-    hideMobile  true = hidden on screens < 600px
-  */
-  const CFG = [
-    // ── LEFT ──────────────────────────────────────────────────────────────────────────
-    { side:'left',  offsetX:14,  topVh:5,  size:54, stringH:44, floatDur:3.8, swayX: 9, swayY:-11, r0:'-2deg', r1: '2deg', flickDur:1.2, parallax:0.16 },
-    { side:'left',  offsetX:48,  topVh:16, size:36, stringH:26, floatDur:4.6, swayX:-7, swayY: -8, r0: '1deg', r1:'-3deg', flickDur:0.9, parallax:0.27, hideMobile:true },
-    { side:'left',  offsetX:8,   topVh:30, size:62, stringH:52, floatDur:3.3, swayX:11, swayY:-13, r0:'-3deg', r1: '2deg', flickDur:1.5, parallax:0.13 },
-    { side:'left',  offsetX:60,  topVh:45, size:30, stringH:20, floatDur:5.2, swayX:-8, swayY: -6, r0: '2deg', r1:'-2deg', flickDur:1.1, parallax:0.34, hideMobile:true },
-    { side:'left',  offsetX:24,  topVh:60, size:48, stringH:38, floatDur:4.0, swayX: 8, swayY:-10, r0:'-1deg', r1: '3deg', flickDur:0.8, parallax:0.21 },
-    { side:'left',  offsetX:50,  topVh:76, size:38, stringH:28, floatDur:3.6, swayX:-6, swayY: -7, r0: '3deg', r1:'-1deg', flickDur:1.3, parallax:0.29, hideMobile:true },
-    { side:'left',  offsetX:18,  topVh:90, size:44, stringH:34, floatDur:4.3, swayX: 7, swayY: -9, r0:'-2deg', r1: '1deg', flickDur:1.0, parallax:0.19 },
-
-    // ── RIGHT ─────────────────────────────────────────────────────────────────────────
-    { side:'right', offsetX:12,  topVh:8,  size:50, stringH:40, floatDur:4.2, swayX:-9, swayY:-10, r0: '2deg', r1:'-2deg', flickDur:1.0, parallax:0.19 },
-    { side:'right', offsetX:46,  topVh:20, size:32, stringH:22, floatDur:3.9, swayX: 6, swayY: -7, r0:'-2deg', r1: '3deg', flickDur:1.4, parallax:0.25, hideMobile:true },
-    { side:'right', offsetX:6,   topVh:34, size:60, stringH:48, floatDur:3.4, swayX:-10,swayY:-14, r0: '1deg', r1:'-3deg', flickDur:0.9, parallax:0.15 },
-    { side:'right', offsetX:55,  topVh:50, size:28, stringH:18, floatDur:5.4, swayX: 7, swayY: -5, r0:'-3deg', r1: '1deg', flickDur:1.2, parallax:0.37, hideMobile:true },
-    { side:'right', offsetX:22,  topVh:64, size:46, stringH:36, floatDur:4.1, swayX:-7, swayY: -9, r0: '2deg', r1:'-2deg', flickDur:0.7, parallax:0.23 },
-    { side:'right', offsetX:48,  topVh:78, size:40, stringH:30, floatDur:3.7, swayX: 9, swayY:-11, r0:'-1deg', r1: '2deg', flickDur:1.1, parallax:0.31, hideMobile:true },
-    { side:'right', offsetX:16,  topVh:92, size:42, stringH:32, floatDur:4.5, swayX:-8, swayY: -8, r0: '1deg', r1:'-1deg', flickDur:1.3, parallax:0.18 },
+  /* ── Colour palettes — each is [body gradient stops, glow colour, flame colour] ── */
+  const PALETTES = [
+    // Warm gold (classic)
+    {
+      bg: 'radial-gradient(ellipse at 38% 32%, #ffe878 0%, #ffa020 45%, #d04000 100%)',
+      glow: 'rgba(255,170,30,0.7)',
+      flame: 'rgba(255,210,50,0.95)',
+      shadow: '0 0 14px 6px rgba(255,170,30,0.5), 0 0 35px 14px rgba(255,120,0,0.3), 0 0 70px 28px rgba(255,80,0,0.15)'
+    },
+    // Deep red
+    {
+      bg: 'radial-gradient(ellipse at 38% 32%, #ff9a9a 0%, #e03030 45%, #900000 100%)',
+      glow: 'rgba(220,40,40,0.7)',
+      flame: 'rgba(255,120,80,0.95)',
+      shadow: '0 0 14px 6px rgba(220,40,40,0.5), 0 0 35px 14px rgba(180,0,0,0.3), 0 0 70px 28px rgba(140,0,0,0.15)'
+    },
+    // Teal / Kerala green
+    {
+      bg: 'radial-gradient(ellipse at 38% 32%, #a0ffe0 0%, #20c090 45%, #006050 100%)',
+      glow: 'rgba(20,180,120,0.7)',
+      flame: 'rgba(100,255,200,0.9)',
+      shadow: '0 0 14px 6px rgba(20,180,120,0.5), 0 0 35px 14px rgba(0,140,90,0.3), 0 0 70px 28px rgba(0,100,60,0.15)'
+    },
+    // Royal purple
+    {
+      bg: 'radial-gradient(ellipse at 38% 32%, #e0a0ff 0%, #9030d0 45%, #4a0080 100%)',
+      glow: 'rgba(150,50,220,0.7)',
+      flame: 'rgba(200,120,255,0.9)',
+      shadow: '0 0 14px 6px rgba(150,50,220,0.5), 0 0 35px 14px rgba(100,0,180,0.3), 0 0 70px 28px rgba(60,0,120,0.15)'
+    },
+    // Saffron orange
+    {
+      bg: 'radial-gradient(ellipse at 38% 32%, #ffe0a0 0%, #ff8c00 45%, #c04000 100%)',
+      glow: 'rgba(255,140,0,0.7)',
+      flame: 'rgba(255,200,80,0.95)',
+      shadow: '0 0 14px 6px rgba(255,140,0,0.5), 0 0 35px 14px rgba(200,80,0,0.3), 0 0 70px 28px rgba(150,40,0,0.15)'
+    },
+    // Rose pink
+    {
+      bg: 'radial-gradient(ellipse at 38% 32%, #ffd0e0 0%, #e0508a 45%, #800040 100%)',
+      glow: 'rgba(220,70,130,0.7)',
+      flame: 'rgba(255,160,200,0.9)',
+      shadow: '0 0 14px 6px rgba(220,70,130,0.5), 0 0 35px 14px rgba(160,20,80,0.3), 0 0 70px 28px rgba(100,0,50,0.15)'
+    },
+    // Sky blue
+    {
+      bg: 'radial-gradient(ellipse at 38% 32%, #b0e8ff 0%, #2090e0 45%, #004080 100%)',
+      glow: 'rgba(30,140,220,0.7)',
+      flame: 'rgba(100,200,255,0.9)',
+      shadow: '0 0 14px 6px rgba(30,140,220,0.5), 0 0 35px 14px rgba(0,90,180,0.3), 0 0 70px 28px rgba(0,50,120,0.15)'
+    },
   ];
 
-  /* ── Build each lantern element ── */
-  CFG.forEach((c, i) => {
-    const el = document.createElement('div');
-    el.className = 'lntn' + (c.hideMobile ? ' hide-mobile' : '');
-    el.dataset.parallax = c.parallax;
-    el.dataset.side      = c.side;
-    el.dataset.offsetx   = c.offsetX;
-    el.dataset.size      = c.size;
+  /* ── Pool of lantern DOM elements (reuse instead of creating/destroying) ── */
+  const POOL_SIZE = 18;  // 9 per side active at once
+  const pool = [];
 
-    // Horizontal position
-    const x = c.side === 'left'
-      ? c.offsetX
-      : window.innerWidth - c.offsetX - c.size;
+  for (let i = 0; i < POOL_SIZE; i++) {
+    const el  = document.createElement('div');
+    el.className = 'lntn';
 
-    el.style.cssText = `
-      left: ${x}px;
-      top: ${c.topVh}vh;
-      --fd: ${c.floatDur}s;
-      --sx: ${c.swayX}px;
-      --sy: ${c.swayY}px;
-      --r0: ${c.r0};
-      --r1: ${c.r1};
-      --fk: ${c.flickDur}s;
-      animation-delay: -${(i * 0.41 % c.floatDur).toFixed(2)}s;
-    `;
-
-    // String
     const str = document.createElement('div');
     str.className = 'lntn-string';
-    str.style.height = c.stringH + 'px';
 
-    // Orb
     const orb = document.createElement('div');
     orb.className = 'lntn-orb';
-    orb.style.width  = c.size + 'px';
-    orb.style.height = Math.round(c.size * 1.18) + 'px';
 
-    // Flame
     const flame = document.createElement('div');
     flame.className = 'lntn-flame';
-    flame.style.animationDelay = `-${(i * 0.23).toFixed(2)}s`;
-    orb.appendChild(flame);
 
+    orb.appendChild(flame);
     el.appendChild(str);
     el.appendChild(orb);
     layer.appendChild(el);
-  });
-
-  /* ── Scroll parallax ── */
-  const all = layer.querySelectorAll('.lntn');
-  let ticking = false;
-
-  function onScroll() {
-    if (ticking) return;
-    ticking = true;
-    requestAnimationFrame(() => {
-      const sy = window.scrollY;
-      all.forEach(el => {
-        const speed = parseFloat(el.dataset.parallax);
-        // translateY moves UP (negative) as scroll increases = depth illusion
-        el.style.transform = `translateY(${-(sy * speed).toFixed(2)}px)`;
-      });
-      ticking = false;
-    });
+    pool.push({ el, orb, flame, active: false, raf: null });
   }
 
-  window.addEventListener('scroll', onScroll, { passive: true });
+  /* ── Lane positions within each border zone (px from edge) ── */
+  const LEFT_LANES  = [10, 30, 55, 75, 100];
+  const RIGHT_LANES = [10, 30, 55, 75, 100];
 
-  /* ── Recalc X on resize ── */
+  function rand(min, max) { return min + Math.random() * (max - min); }
+  function randInt(min, max) { return Math.floor(rand(min, max + 1)); }
+  function pick(arr) { return arr[randInt(0, arr.length - 1)]; }
+
+  /* ── Launch one lantern ── */
+  function launch(item, side) {
+    const vw     = window.innerWidth;
+    const vh     = window.innerHeight;
+    const pal    = pick(PALETTES);
+    const size   = randInt(28, 56);        // orb diameter
+    const dur    = rand(7, 14);            // seconds to cross full screen
+    const swayAmt= randInt(8, 22);         // px horizontal sway
+    const blinkDur = rand(1.0, 2.5);       // glow pulse speed
+    const lanes  = side === 'left' ? LEFT_LANES : RIGHT_LANES;
+    const lane   = pick(lanes);
+
+    // X position: lane offset from the correct edge
+    const x = side === 'left'
+      ? lane
+      : vw - lane - size;
+
+    // Start just below bottom of viewport
+    const startY = vh + size + 60;
+    // End well above top
+    const endY   = -(size + 100);
+    const travel = startY - endY;
+
+    item.active = true;
+
+    // Style the orb
+    item.orb.style.cssText = `
+      width: ${size}px;
+      height: ${Math.round(size * 1.18)}px;
+      background: ${pal.bg};
+      box-shadow: ${pal.shadow};
+      --gc: ${pal.glow};
+      animation:
+        lntnBlink ${blinkDur.toFixed(2)}s ease-in-out infinite,
+        lntnSway  ${rand(2.5,4.5).toFixed(2)}s ease-in-out infinite;
+      --sw: ${swayAmt}px;
+    `;
+
+    // Flame colour
+    item.flame.style.cssText = `
+      background: radial-gradient(ellipse, ${pal.flame} 0%, transparent 70%);
+      animation: flameFlick ${rand(0.6,1.4).toFixed(2)}s ease-in-out infinite alternate;
+    `;
+
+    // Position lantern
+    item.el.style.cssText = `
+      left: ${x}px;
+      top: ${startY}px;
+      opacity: 1;
+    `;
+
+    // Animate via JS for smooth continuous movement (not CSS animation,
+    // so it works regardless of scroll position)
+    const startTime = performance.now();
+
+    function tick(now) {
+      const elapsed  = now - startTime;
+      const progress = elapsed / (dur * 1000);
+
+      if (progress >= 1) {
+        // Done — reset and relaunch from bottom
+        item.el.style.opacity = '0';
+        item.active = false;
+        // Slight delay before relaunching so they stagger naturally
+        setTimeout(() => launch(item, side), rand(200, 1200));
+        return;
+      }
+
+      // Ease in/out for a gentle float feel
+      const y = startY - travel * easeInOut(progress);
+
+      // Fade in at bottom, fade out near top
+      let opacity = 1;
+      if (progress < 0.08) opacity = progress / 0.08;
+      if (progress > 0.88) opacity = (1 - progress) / 0.12;
+
+      item.el.style.top     = y + 'px';
+      item.el.style.opacity = opacity.toFixed(3);
+
+      item.raf = requestAnimationFrame(tick);
+    }
+
+    item.raf = requestAnimationFrame(tick);
+  }
+
+  function easeInOut(t) {
+    return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+  }
+
+  /* ── Split pool: first half left, second half right ── */
+  const half = POOL_SIZE / 2;
+
+  // Stagger launches so they don't all appear at once
+  pool.forEach((item, i) => {
+    const side = i < half ? 'left' : 'right';
+    const delay = (i % half) * rand(600, 1400);
+    setTimeout(() => launch(item, side), delay);
+  });
+
+  /* ── Reposition X on resize ── */
   window.addEventListener('resize', () => {
-    all.forEach((el, i) => {
-      const c = CFG[i];
-      const x = c.side === 'left'
-        ? c.offsetX
-        : window.innerWidth - c.offsetX - c.size;
-      el.style.left = x + 'px';
+    // Active lanterns will naturally reposition on next launch cycle
+    // For immediate snap we update left position of active ones
+    pool.forEach((item, i) => {
+      if (!item.active) return;
+      const side = i < half ? 'left' : 'right';
+      const vw   = window.innerWidth;
+      const lanes = side === 'left' ? LEFT_LANES : RIGHT_LANES;
+      const lane  = pick(lanes);
+      const size  = parseInt(item.orb.style.width);
+      const x = side === 'left' ? lane : vw - lane - size;
+      item.el.style.left = x + 'px';
     });
   });
 
