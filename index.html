@@ -897,6 +897,164 @@
             border-radius: 2px;
         }
 
+        .hero-tagline {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            margin: 12px 0 20px;
+        }
+
+        .tagline-sacred {
+            font-size: clamp(9px, 1.4vw, 11px);
+            letter-spacing: 0.35em;
+            text-transform: uppercase;
+            color: var(--gold);
+            opacity: 0.7;
+            font-family: sans-serif;
+        }
+
+        .tagline-main {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .tagline-region {
+            font-size: clamp(16px, 3vw, 26px);
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--gold);
+            font-family: Georgia, serif;
+            font-weight: 400;
+        }
+
+        .tagline-heart {
+            font-size: clamp(14px, 2.5vw, 20px);
+            color: #c0392b;   /* deep red like the card */
+            line-height: 1;
+        }
+
+        .tagline-ornament {
+            font-size: clamp(10px, 1.5vw, 13px);
+            color: var(--gold);
+            opacity: 0.8;
+        }
+
+        .tagline-sub {
+            font-size: clamp(9px, 1.3vw, 11px);
+            letter-spacing: 0.08em;
+            color: rgba(240, 230, 204, 0.55);
+            font-family: Georgia, serif;
+            font-style: italic;
+            text-align: center;
+            max-width: 340px;
+            line-height: 1.6;
+        }
+
+        /* ── Fixed overlay — sits above page, never blocks clicks ── */
+        #lantern-layer {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 999;
+        overflow: hidden;
+        }
+
+        /* ── Wrapper per lantern ── */
+        .lntn {
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        will-change: transform;
+        }
+
+        /* ── String above the orb ── */
+        .lntn-string {
+        width: 1px;
+        background: linear-gradient(to bottom, rgba(201,168,76,0.45), transparent);
+        /* height set inline */
+        }
+
+        /* ── The glowing orb ── */
+        .lntn-orb {
+        position: relative;
+        border-radius: 50% 50% 46% 46% / 55% 55% 45% 45%;
+        background: radial-gradient(ellipse at 38% 32%,
+            rgba(255, 228, 120, 0.98) 0%,
+            rgba(255, 165, 40,  0.90) 40%,
+            rgba(210,  80, 15,  0.70) 75%,
+            rgba(150,  40,  5,  0.50) 100%
+        );
+        box-shadow:
+            0 0 12px  5px  rgba(255, 190,  60, 0.55),
+            0 0 30px  12px rgba(255, 130,  20, 0.35),
+            0 0 65px  28px rgba(255,  90,   0, 0.18),
+            0 0 100px 40px rgba(255,  60,   0, 0.08),
+            inset 0 -8px 16px rgba(170, 50, 0, 0.35),
+            inset 5px 5px 14px rgba(255, 245, 190, 0.45);
+        animation: lntnFloat var(--fd) ease-in-out infinite alternate;
+        }
+
+        /* Gloss highlight */
+        .lntn-orb::before {
+        content: '';
+        position: absolute;
+        top: 12%;
+        left: 18%;
+        width: 32%;
+        height: 28%;
+        background: radial-gradient(ellipse, rgba(255,255,230,0.75) 0%, transparent 70%);
+        border-radius: 50%;
+        }
+
+        /* Bottom crease line */
+        .lntn-orb::after {
+        content: '';
+        position: absolute;
+        bottom: 20%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 55%;
+        height: 1.5px;
+        background: rgba(160, 60, 0, 0.4);
+        border-radius: 50%;
+        }
+
+        /* ── Flame glow beneath orb ── */
+        .lntn-flame {
+        position: absolute;
+        bottom: -5px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 45%;
+        height: 10px;
+        background: radial-gradient(ellipse, rgba(255,210,60,0.95) 0%, transparent 70%);
+        border-radius: 50%;
+        filter: blur(3px);
+        animation: lntnFlicker var(--fk) ease-in-out infinite alternate;
+        }
+
+        /* ── Idle float ── */
+        @keyframes lntnFloat {
+        0%   { transform: translate(0px,      0px)      rotate(var(--r0)); }
+        100% { transform: translate(var(--sx), var(--sy)) rotate(var(--r1)); }
+        }
+
+        /* ── Flame flicker ── */
+        @keyframes lntnFlicker {
+        0%   { opacity: 0.65; transform: translateX(-50%) scale(0.9);  }
+        100% { opacity: 1.00; transform: translateX(-50%) scale(1.35); }
+        }
+
+        /* ── Mobile: reduce to 3 per side, lower opacity ── */
+        @media (max-width: 600px) {
+        .lntn { opacity: 0.55; }
+        .lntn.hide-mobile { display: none; }
+        }
+
+
         /* Tablet — bring arrows inside so they don't clip */
         @media (max-width: 800px) {
             .carousel-btn.prev { left: 8px; }
@@ -925,11 +1083,148 @@
 </head>
 <body>
 
+
+<div id="lantern-layer" aria-hidden="true"></div>
+
+<script>
+(function () {
+
+  const layer = document.getElementById('lantern-layer');
+
+  /*
+    LANTERN CONFIG
+    ─────────────
+    side        'left' | 'right'
+    offsetX     px from the edge (left edge for left, right edge for right)
+    topVh       initial vertical position in vh
+    size        orb diameter in px
+    stringH     string length in px above the orb
+    floatDur    idle sway cycle in seconds
+    swayX       horizontal sway distance px (+ = right, - = left)
+    swayY       vertical sway distance px   (negative = up)
+    r0 / r1     rotation start / end (CSS angle strings)
+    flickDur    flame flicker cycle in seconds
+    parallax    scroll multiplier (higher = moves faster on scroll)
+    hideMobile  true = hidden on screens < 600px
+  */
+  const CFG = [
+    // ── LEFT ──────────────────────────────────────────────────────────────────────────
+    { side:'left',  offsetX:14,  topVh:5,  size:54, stringH:44, floatDur:3.8, swayX: 9, swayY:-11, r0:'-2deg', r1: '2deg', flickDur:1.2, parallax:0.16 },
+    { side:'left',  offsetX:48,  topVh:16, size:36, stringH:26, floatDur:4.6, swayX:-7, swayY: -8, r0: '1deg', r1:'-3deg', flickDur:0.9, parallax:0.27, hideMobile:true },
+    { side:'left',  offsetX:8,   topVh:30, size:62, stringH:52, floatDur:3.3, swayX:11, swayY:-13, r0:'-3deg', r1: '2deg', flickDur:1.5, parallax:0.13 },
+    { side:'left',  offsetX:60,  topVh:45, size:30, stringH:20, floatDur:5.2, swayX:-8, swayY: -6, r0: '2deg', r1:'-2deg', flickDur:1.1, parallax:0.34, hideMobile:true },
+    { side:'left',  offsetX:24,  topVh:60, size:48, stringH:38, floatDur:4.0, swayX: 8, swayY:-10, r0:'-1deg', r1: '3deg', flickDur:0.8, parallax:0.21 },
+    { side:'left',  offsetX:50,  topVh:76, size:38, stringH:28, floatDur:3.6, swayX:-6, swayY: -7, r0: '3deg', r1:'-1deg', flickDur:1.3, parallax:0.29, hideMobile:true },
+    { side:'left',  offsetX:18,  topVh:90, size:44, stringH:34, floatDur:4.3, swayX: 7, swayY: -9, r0:'-2deg', r1: '1deg', flickDur:1.0, parallax:0.19 },
+
+    // ── RIGHT ─────────────────────────────────────────────────────────────────────────
+    { side:'right', offsetX:12,  topVh:8,  size:50, stringH:40, floatDur:4.2, swayX:-9, swayY:-10, r0: '2deg', r1:'-2deg', flickDur:1.0, parallax:0.19 },
+    { side:'right', offsetX:46,  topVh:20, size:32, stringH:22, floatDur:3.9, swayX: 6, swayY: -7, r0:'-2deg', r1: '3deg', flickDur:1.4, parallax:0.25, hideMobile:true },
+    { side:'right', offsetX:6,   topVh:34, size:60, stringH:48, floatDur:3.4, swayX:-10,swayY:-14, r0: '1deg', r1:'-3deg', flickDur:0.9, parallax:0.15 },
+    { side:'right', offsetX:55,  topVh:50, size:28, stringH:18, floatDur:5.4, swayX: 7, swayY: -5, r0:'-3deg', r1: '1deg', flickDur:1.2, parallax:0.37, hideMobile:true },
+    { side:'right', offsetX:22,  topVh:64, size:46, stringH:36, floatDur:4.1, swayX:-7, swayY: -9, r0: '2deg', r1:'-2deg', flickDur:0.7, parallax:0.23 },
+    { side:'right', offsetX:48,  topVh:78, size:40, stringH:30, floatDur:3.7, swayX: 9, swayY:-11, r0:'-1deg', r1: '2deg', flickDur:1.1, parallax:0.31, hideMobile:true },
+    { side:'right', offsetX:16,  topVh:92, size:42, stringH:32, floatDur:4.5, swayX:-8, swayY: -8, r0: '1deg', r1:'-1deg', flickDur:1.3, parallax:0.18 },
+  ];
+
+  /* ── Build each lantern element ── */
+  CFG.forEach((c, i) => {
+    const el = document.createElement('div');
+    el.className = 'lntn' + (c.hideMobile ? ' hide-mobile' : '');
+    el.dataset.parallax = c.parallax;
+    el.dataset.side      = c.side;
+    el.dataset.offsetx   = c.offsetX;
+    el.dataset.size      = c.size;
+
+    // Horizontal position
+    const x = c.side === 'left'
+      ? c.offsetX
+      : window.innerWidth - c.offsetX - c.size;
+
+    el.style.cssText = `
+      left: ${x}px;
+      top: ${c.topVh}vh;
+      --fd: ${c.floatDur}s;
+      --sx: ${c.swayX}px;
+      --sy: ${c.swayY}px;
+      --r0: ${c.r0};
+      --r1: ${c.r1};
+      --fk: ${c.flickDur}s;
+      animation-delay: -${(i * 0.41 % c.floatDur).toFixed(2)}s;
+    `;
+
+    // String
+    const str = document.createElement('div');
+    str.className = 'lntn-string';
+    str.style.height = c.stringH + 'px';
+
+    // Orb
+    const orb = document.createElement('div');
+    orb.className = 'lntn-orb';
+    orb.style.width  = c.size + 'px';
+    orb.style.height = Math.round(c.size * 1.18) + 'px';
+
+    // Flame
+    const flame = document.createElement('div');
+    flame.className = 'lntn-flame';
+    flame.style.animationDelay = `-${(i * 0.23).toFixed(2)}s`;
+    orb.appendChild(flame);
+
+    el.appendChild(str);
+    el.appendChild(orb);
+    layer.appendChild(el);
+  });
+
+  /* ── Scroll parallax ── */
+  const all = layer.querySelectorAll('.lntn');
+  let ticking = false;
+
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      const sy = window.scrollY;
+      all.forEach(el => {
+        const speed = parseFloat(el.dataset.parallax);
+        // translateY moves UP (negative) as scroll increases = depth illusion
+        el.style.transform = `translateY(${-(sy * speed).toFixed(2)}px)`;
+      });
+      ticking = false;
+    });
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  /* ── Recalc X on resize ── */
+  window.addEventListener('resize', () => {
+    all.forEach((el, i) => {
+      const c = CFG[i];
+      const x = c.side === 'left'
+        ? c.offsetX
+        : window.innerWidth - c.offsetX - c.size;
+      el.style.left = x + 'px';
+    });
+  });
+
+})();
+</script>
+
 <!-- ═══════════════════════════════════════════ HERO -->
 <section class="hero">
     <div class="hero-bg"></div>
     <div class="hero-content">
         <p class="hero-eyebrow">You are cordially invited to celebrate the union of</p>
+        <div class="hero-tagline">
+            <span class="tagline-sacred">A Sacred Confluence</span>
+            <div class="tagline-main">
+                <span class="tagline-ornament">✦</span>
+                <span class="tagline-region">Kerala</span>
+                <span class="tagline-heart">♥</span>
+                <span class="tagline-region">Gujarat</span>
+                <span class="tagline-ornament">✦</span>
+            </div>
+            <span class="tagline-sub">Celebrating the union of two cultures, two families, and a lifetime of love</span>
+        </div>
         <h1>CHITRA <span class="amp">&</span> HITARTH</h1>
         <p class="hero-date">3rd May · 2026 · Jamnagar</p>
         <div class="countdown-wrap">
