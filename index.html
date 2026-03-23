@@ -1822,7 +1822,7 @@
 
 <script>
     const audio = document.getElementById('bgAudio');
-    let isPlaying = true;
+    let isPlaying = false;
 
     function setPlaying(state) {
         isPlaying = state;
@@ -1854,6 +1854,7 @@
     }
 
     // Try immediate autoplay first, fall back to interaction-triggered
+    setPlaying(true)
     audio.play().then(() => {
         setPlaying(true);
     }).catch(() => {
