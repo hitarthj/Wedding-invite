@@ -1854,16 +1854,32 @@
     }
 
     // Try immediate autoplay first, fall back to interaction-triggered
-    setPlaying(true)
+    audio.muted = true;
     audio.play().then(() => {
+        audio.muted = false;
         setPlaying(true);
-    }).catch(() => {
-        // Browser blocked autoplay — wait for any user interaction
-        document.addEventListener('click', startOnInteraction);
-        document.addEventListener('keydown', startOnInteraction);
-        document.addEventListener('touchstart', startOnInteraction);
-        document.addEventListener('scroll',     startOnInteraction);
-    });
+    }).catch(() => {});
+    const startOnInteraction = () => {
+        audio.play().then(() => {
+            setPlaying(true);
+            // Clean up listeners once playing
+            document.removeEventListener('click', startOnInteraction);
+            document.removeEventListener('keydown', startOnInteraction);
+            document.removeEventListener('touchstart', startOnInteraction);
+            document.removeEventListener('scroll', startOnInteraction);
+        }).catch(() => {});
+        };
+
+        audio.play().then(() => {
+            setPlaying(true);
+        }).catch(() => {
+            // Browser blocked autoplay — wait for any user interaction
+            document.addEventListener('click', startOnInteraction);
+            document.addEventListener('keydown', startOnInteraction);
+            document.addEventListener('touchstart', startOnInteraction);
+            document.addEventListener('scroll', startOnInteraction);
+        });
+
 </script>
 
 </body>
