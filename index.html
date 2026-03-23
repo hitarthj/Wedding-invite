@@ -1842,44 +1842,30 @@
         }
     }
 
-    // Autoplay on first user interaction (required by browsers)
     function startOnInteraction() {
+        if (isPlaying) return;
+        audio.muted = false;
         audio.play().then(() => {
             setPlaying(true);
         }).catch(() => {});
         document.removeEventListener('click', startOnInteraction);
         document.removeEventListener('keydown', startOnInteraction);
         document.removeEventListener('touchstart', startOnInteraction);
-        document.removeEventListener('scroll',     startOnInteraction);
+        document.removeEventListener('scroll', startOnInteraction);
     }
 
-    // Try immediate autoplay first, fall back to interaction-triggered
+    // Try muted autoplay first (browsers allow this)
     audio.muted = true;
     audio.play().then(() => {
         audio.muted = false;
         setPlaying(true);
-    }).catch(() => {});
-    const startOnInteraction = () => {
-        audio.play().then(() => {
-            setPlaying(true);
-            // Clean up listeners once playing
-            document.removeEventListener('click', startOnInteraction);
-            document.removeEventListener('keydown', startOnInteraction);
-            document.removeEventListener('touchstart', startOnInteraction);
-            document.removeEventListener('scroll', startOnInteraction);
-        }).catch(() => {});
-        };
-
-        audio.play().then(() => {
-            setPlaying(true);
-        }).catch(() => {
-            // Browser blocked autoplay — wait for any user interaction
-            document.addEventListener('click', startOnInteraction);
-            document.addEventListener('keydown', startOnInteraction);
-            document.addEventListener('touchstart', startOnInteraction);
-            document.addEventListener('scroll', startOnInteraction);
-        });
-
+    }).catch(() => {
+        // Muted autoplay also failed, wait for interaction
+        document.addEventListener('click', startOnInteraction);
+        document.addEventListener('keydown', startOnInteraction);
+        document.addEventListener('touchstart', startOnInteraction);
+        document.addEventListener('scroll', startOnInteraction);
+    });
 </script>
 
 </body>
