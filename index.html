@@ -1823,6 +1823,7 @@
 <script>
     const audio = document.getElementById('bgAudio');
     let isPlaying = false;
+    let interactionListenersAdded = false;
 
     function setPlaying(state) {
         isPlaying = state;
@@ -1834,12 +1835,22 @@
 
     function toggleMusic() {
         if (!isPlaying) {
-            audio.play();
-            setPlaying(true);
+            audio.play().then(() => setPlaying(true)).catch(() => {});
         } else {
             audio.pause();
             setPlaying(false);
         }
+    }
+
+    function tryAutoplay() {
+        audio.muted = true;
+        audio.play().then(() => {
+            audio.muted = false;
+            setPlaying(true);
+            removeInteractionListeners();
+        }).catch(() => {
+            addInteractionListeners();
+        });
     }
 
     function startOnInteraction() {
@@ -1847,25 +1858,31 @@
         audio.muted = false;
         audio.play().then(() => {
             setPlaying(true);
+            removeInteractionListeners();
         }).catch(() => {});
-        document.removeEventListener('click', startOnInteraction);
-        document.removeEventListener('keydown', startOnInteraction);
-        document.removeEventListener('touchstart', startOnInteraction);
-        document.removeEventListener('scroll', startOnInteraction);
     }
 
-    // Try muted autoplay first (browsers allow this)
-    audio.muted = true;
-    audio.play().then(() => {
-        audio.muted = false;
-        setPlaying(true);
-    }).catch(() => {
-        // Muted autoplay also failed, wait for interaction
-        document.addEventListener('click', startOnInteraction);
-        document.addEventListener('keydown', startOnInteraction);
-        document.addEventListener('touchstart', startOnInteraction);
-        document.addEventListener('scroll', startOnInteraction);
-    });
+    function addInteractionListeners() {
+        if (interactionListenersAdded) return;
+        interactionListenersAdded = true;
+        ['click', 'keydown', 'touchstart', 'scroll'].forEach(e =>
+            document.addEventListener(e, startOnInteraction)
+        );
+    }
+
+    function removeInteractionListeners() {
+        ['click', 'keydown', 'touchstart', 'scroll'].forEach(e =>
+            document.removeEventListener(e, startOnInteraction)
+        );
+        interactionListenersAdded = false;
+    }
+
+    // Wait until audio is ready before attempting autoplay
+    if (audio.readyState >= 3) {
+        tryAutoplay();
+    } else {
+        audio.addEventListener('canplaythrough', tryAutoplay, { once: true });
+    }
 </script>
 
 </body>
