@@ -1823,7 +1823,7 @@
 <script>
     const audio = document.getElementById('bgAudio');
     let isPlaying = false;
-    let interactionListenersAdded = false;
+    let userPaused = false;
 
     function setPlaying(state) {
         isPlaying = state;
@@ -1835,54 +1835,24 @@
 
     function toggleMusic() {
         if (!isPlaying) {
+            userPaused = false;
             audio.play().then(() => setPlaying(true)).catch(() => {});
         } else {
+            userPaused = true;
             audio.pause();
             setPlaying(false);
         }
     }
 
-    function tryAutoplay() {
-        audio.muted = true;
-        audio.play().then(() => {
-            audio.muted = false;
-            setPlaying(true);
-            removeInteractionListeners();
-        }).catch(() => {
-            addInteractionListeners();
-        });
-    }
-
-    function startOnInteraction() {
-        if (isPlaying) return;
-        audio.muted = false;
+    function tryPlay() {
+        if (isPlaying || userPaused) return;
         audio.play().then(() => {
             setPlaying(true);
-            removeInteractionListeners();
+            clearInterval(playInterval);
         }).catch(() => {});
     }
 
-    function addInteractionListeners() {
-        if (interactionListenersAdded) return;
-        interactionListenersAdded = true;
-        ['click', 'keydown', 'touchstart', 'scroll'].forEach(e =>
-            document.addEventListener(e, startOnInteraction)
-        );
-    }
-
-    function removeInteractionListeners() {
-        ['click', 'keydown', 'touchstart', 'scroll'].forEach(e =>
-            document.removeEventListener(e, startOnInteraction)
-        );
-        interactionListenersAdded = false;
-    }
-
-    // Wait until audio is ready before attempting autoplay
-    if (audio.readyState >= 3) {
-        tryAutoplay();
-    } else {
-        audio.addEventListener('canplaythrough', tryAutoplay, { once: true });
-    }
+    const playInterval = setInterval(tryPlay, 500);
 </script>
 
 </body>
